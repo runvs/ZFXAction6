@@ -125,7 +125,7 @@ class BattleSystem extends FlxObject
 	{
 		if(FlxG.keys.justPressed.K)
 		{
-			
+			trace(_state._itemGenerator.generateDrop());
 		}
 		if ( FlxG.keys.justPressed.A)
 		{

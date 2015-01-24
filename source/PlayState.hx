@@ -30,7 +30,7 @@ class PlayState extends FlxState
 	private var _inLevelChange : Bool;
 	
 	private var _battleSystem : BattleSystem;
-
+	public var _itemGenerator:ItemGenerator;
 	
 	 /* Function that is called up when to state is created to set it up. 
 	 */
@@ -44,7 +44,7 @@ class PlayState extends FlxState
 		
 		_currentLevelNumber = 0;
 		
-	
+		_itemGenerator = new ItemGenerator();
 		
 		PlacePlayer();
 		FlxG.camera.follow(_player, FlxCamera.STYLE_TOPDOWN, new FlxPoint(), 10);
