@@ -88,7 +88,7 @@ class Leaf extends flixel.FlxBasic
 
             // the room can be between 3 x 3 tiles to the size of the leaf - 2.
             roomSize = new flixel.util.FlxPoint(flixel.util.FlxRandom.intRanged(3, width - 2), flixel.util.FlxRandom.intRanged(3, height - 2));
-            trace(roomSize);
+            //trace(roomSize);
             // place the room within the Leaf, but don't put it right 
             // against the side of the Leaf (that would merge rooms together)
             var maxX:Int = cast width - roomSize.x - 1 + 0.5;

@@ -22,6 +22,7 @@ class PlayState extends FlxState
 	
 	private var _player : Player;
 
+	private var enemy : Enemy;
 
 	/**
 	 * Function that is called up when to state is created to set it up. 
@@ -39,7 +40,8 @@ class PlayState extends FlxState
 		
 	
 		_player = new Player();
-		
+		enemy = new Enemy(null, 0, 0);
+
 		for (i in 0 ... _levelList.members[_currentLevelNumber].map.widthInTiles)
 		{
 			for (j in 0 ... _levelList.members[_currentLevelNumber].map.heightInTiles)
@@ -48,6 +50,7 @@ class PlayState extends FlxState
 				{
 					_player.setPosition(16 * i, 16 * j);
 					break;
+					enemy.setPosition(16 * i, 16 * j);
 				}
 			}
 		}
@@ -74,7 +77,9 @@ class PlayState extends FlxState
 		
 		//_grpGraphicMap.visible = true;
 		_player.update();
+		enemy.update();
 		FlxG.collide(_player, _levelList.members[_currentLevelNumber].map);
+		FlxG.collide(enemy, _levelList.members[_currentLevelNumber].map);
 	}	
 	
 	private function MoveLevelDown() : Void 
@@ -90,7 +95,7 @@ class PlayState extends FlxState
 		super.draw();
 		
 		_levelList.members[_currentLevelNumber].draw();
-		
+		enemy.draw();
 		_player.draw();
 		
 		_player.drawHealth();
