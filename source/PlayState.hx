@@ -7,10 +7,14 @@ import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.group.FlxTypedGroup;
 import flixel.text.FlxText;
+import flixel.tweens.FlxTween;
 import flixel.ui.FlxButton;
+import flixel.util.FlxColor;
+import flixel.util.FlxColorUtil;
 import flixel.util.FlxMath;
 import flixel.util.FlxPoint;
 import flixel.util.FlxRandom;
+import flixel.util.FlxTimer;
 
 /**
  * A FlxState which can be used for the actual gameplay.
@@ -22,16 +26,14 @@ class PlayState extends FlxState
 	
 	private var _player : Player;
 
+	private var _overlay : FlxSprite;
+	private var _inLevelChange : Bool;
 
 	/**
 	 * Function that is called up when to state is created to set it up. 
 	 */
 	override public function create():Void
 	{
-		try 
-		{
-			
-		
 		super.create();
 		
 		_levelList = new FlxTypedGroup<Level>();
@@ -45,11 +47,13 @@ class PlayState extends FlxState
 		
 		PlacePlayer();
 		FlxG.camera.follow(_player, FlxCamera.STYLE_TOPDOWN, new FlxPoint(), 10);
-			}
-		catch (msg : String)
-		{
-			trace (msg);
-		}
+		
+		_overlay = new FlxSprite();
+		_overlay.makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+		_overlay.alpha = 1.0;
+		
+		FlxTween.tween(_overlay, { alpha:0.0 }, 1.0);
+		_inLevelChange = false;
 	}
 	
 	/**
@@ -66,27 +70,29 @@ class PlayState extends FlxState
 	 */
 	override public function update():Void
 	{
-		try
-		{
+
 		super.update();
 		_levelList.members[_currentLevelNumber].update();
-		
+		_overlay.update();
 		_player.update();
 		FlxG.collide(_player, _levelList.members[_currentLevelNumber].map);
 		
-		
-		// To 'close' the interior, black needs to be wall too, index 0.
-		var px : Int = cast _player.x / 16;
-		var py : Int = cast _player.y / 16;
-		
-		if (_levelList.members[_currentLevelNumber].map.getTile(px, py) == 1)
+		trace (_inLevelChange);
+		if (!_inLevelChange)
 		{
-			MoveLevelDown();
-		}
-		}
-		catch (msg : String)
-		{
-			trace (msg);
+			// To 'close' the interior, black needs to be wall too, index 0.
+			var px : Int = cast _player.x / 16;
+			var py : Int = cast _player.y / 16;
+			
+			
+			if (_levelList.members[_currentLevelNumber].map.getTile(px, py) == 1)
+			{
+				FlxTween.tween(_overlay, { alpha:1.0 }, 1.0);
+				var t : FlxTimer = new FlxTimer(1.0, function (t:FlxTimer) : Void { MoveLevelDown();  } );
+				//MoveLevelDown();
+				_inLevelChange = true;
+			}
+			
 		}
 	}	
 	
@@ -98,6 +104,8 @@ class PlayState extends FlxState
 		}
 		_currentLevelNumber++;
 		PlacePlayer();
+		FlxTween.tween(_overlay, { alpha:0.0 }, 1.0);
+		_inLevelChange = false;
 	}
 	
 	private function MoveLevelUp() : Void 
@@ -136,5 +144,8 @@ class PlayState extends FlxState
 		_levelList.members[_currentLevelNumber].draw();
 		_player.draw();
 		_player.drawHealth();
+		
+		_overlay.draw();
+		
 	}
 }
