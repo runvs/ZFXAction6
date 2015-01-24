@@ -81,7 +81,14 @@ class PlayState extends FlxState
 	 */
 	override public function update():Void
 	{
-
+		if (_battleSystem._lostBattle)
+		{
+			// you lost a battle
+			
+			FlxTween.tween(_overlay, { alpha : 1.0 }, 1);
+			var t: FlxTimer = new FlxTimer(1, function (t:FlxTimer) : Void { FlxG.switchState(new MenuState()); } );
+		}
+		
 		if (!_battleSystem.active)
 		{
 			super.update();

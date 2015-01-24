@@ -38,6 +38,7 @@ class BattleSystem extends FlxObject
 	
 	private var _state : PlayState;
 	
+	public var _lostBattle : Bool = false;
 	
 	public function new(state:PlayState) 
 	{
@@ -46,6 +47,7 @@ class BattleSystem extends FlxObject
 		
 		_awaitInput = true;
 		active = false;
+		_lostBattle = false;
 		
 		_background = new FlxSprite();
 		_background.makeGraphic(600, 400, FlxColorUtil.makeFromARGB(1.0, 118, 66, 138));
@@ -119,7 +121,24 @@ class BattleSystem extends FlxObject
 		
 		ScaleHealthBars();
 		
+		CheckActorHealth();
+		
+		_btnSpecial.text = "[S]pecial (" + (_playerProperties.SpecialAttackNeeded - _playerProperties.SpecialAttackCollected) + ")";
 	}
+	
+	private function LooseBattle() : Void 
+	{
+		// you loose
+		active = false;
+		_lostBattle = true;
+	}
+	
+	private function WinBattle () : Void 
+	{
+		// drop items
+		active = false;
+	}
+	
 	
 	private function getInput() : Void 
 	{
@@ -202,6 +221,18 @@ class BattleSystem extends FlxObject
 	{
 		_awaitInput = false;
 		var t : FlxTimer = new FlxTimer(1.0, function (t:FlxTimer) : Void { _awaitInput = true; } );
+	}
+	
+	function CheckActorHealth():Void 
+	{
+		if (_playerProperties.HealthCurrent <= 0)
+		{
+			LooseBattle();
+		}
+		else if (_enemyProperties.HealthCurrent <= 0)
+		{
+			WinBattle();
+		}
 	}
 	
 	
