@@ -28,6 +28,8 @@ class PlayState extends FlxState
 
 	private var _overlay : FlxSprite;
 	private var _inLevelChange : Bool;
+	
+	private var _battleSystem : BattleSystem;
 
 	
 	 /* Function that is called up when to state is created to set it up. 
@@ -49,6 +51,7 @@ class PlayState extends FlxState
 		_overlay = new FlxSprite();
 		_overlay.makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		_overlay.alpha = 1.0;
+		_overlay.scrollFactor.set();
 		
 		FlxTween.tween(_overlay, { alpha:0.0 }, 1.0);
 		_inLevelChange = false;
@@ -59,6 +62,9 @@ class PlayState extends FlxState
 		
 		FlxTween.tween(_overlay, { alpha:0.0 }, 1.0);
 		_inLevelChange = false;
+		
+		_battleSystem = new BattleSystem();
+		
 	}
 	
 	/**
@@ -76,29 +82,23 @@ class PlayState extends FlxState
 	override public function update():Void
 	{
 
-		super.update();
-		_levelList.members[_currentLevelNumber].update();
-		_overlay.update();
-		_player.update();
-	
-		FlxG.collide(_player, _levelList.members[_currentLevelNumber].map);
-		
-		trace (_inLevelChange);
-		if (!_inLevelChange)
+		if (!_battleSystem.active)
 		{
-			// To 'close' the interior, black needs to be wall too, index 0.
-			var px : Int = cast _player.x / 16;
-			var py : Int = cast _player.y / 16;
+			super.update();
+			_levelList.members[_currentLevelNumber].update();
+			_overlay.update();
+			_player.update();
 			
+			FlxG.collide(_player, _levelList.members[_currentLevelNumber].map);
 			
-			if (_levelList.members[_currentLevelNumber].map.getTile(px, py) == 1)
-			{
-				FlxTween.tween(_overlay, { alpha:1.0 }, 1.0);
-				var t : FlxTimer = new FlxTimer(1.0, function (t:FlxTimer) : Void { MoveLevelDown();  } );
-				//MoveLevelDown();
-				_inLevelChange = true;
-			}			
+			LevelChange();
 		}
+		else
+		{
+			_battleSystem.update();
+		}
+		
+		
 	}	
 	
 	private function MoveLevelDown() : Void 
@@ -142,6 +142,25 @@ class PlayState extends FlxState
 			}
 		}
 	}
+	
+	function LevelChange():Void 
+	{
+		if (!_inLevelChange)
+		{
+			// To 'close' the interior, black needs to be wall too, index 0.
+			var px : Int = cast _player.x / 16;
+			var py : Int = cast _player.y / 16;
+			
+			
+			if (_levelList.members[_currentLevelNumber].map.getTile(px, py) == 1)
+			{
+				FlxTween.tween(_overlay, { alpha:1.0 }, 1.0);
+				var t : FlxTimer = new FlxTimer(1.0, function (t:FlxTimer) : Void { MoveLevelDown();  } );
+				//MoveLevelDown();
+				_inLevelChange = true;
+			}			
+		}
+	}
 
 	override public function draw():Void
 	{
@@ -150,7 +169,15 @@ class PlayState extends FlxState
 		_player.draw();
 		_player.drawHealth();
 		
+		_battleSystem.draw();
+		
 		_overlay.draw();
 		
 	}
+	
+	public function StartFight (e:Enemy) : Void 
+	{
+		_battleSystem.StartBattle(e, _player);
+	}
+	
 }
