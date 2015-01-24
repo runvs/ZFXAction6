@@ -17,7 +17,15 @@ class MenuState extends FlxState
 	 */
 	override public function create():Void
 	{
+		
 		super.create();
+		
+		#if flash
+		FlxG.sound.playMusic(AssetPaths.IkeaKnight_OST__mp3, 1.0, true);
+		#else
+		FlxG.sound.playMusic(AssetPaths.IkeaKnight_OST__ogg, 1.0, true);
+		#end
+		
 	}
 	
 	/**
