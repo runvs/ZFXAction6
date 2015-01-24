@@ -27,7 +27,8 @@ class PlayState extends FlxState
 	{
 		super.create();
 		_level = new Level(this, 5, 5);
-		_player = new Player();
+		add(MapGenerator.generate(512, 512));
+_		player = new Player();
 		
 		FlxG.camera.follow(_player, FlxCamera.STYLE_TOPDOWN, new FlxPoint(), 10);
 	}
@@ -47,13 +48,16 @@ class PlayState extends FlxState
 	override public function update():Void
 	{
 		super.update();
-		_level.update();
+		//_level.update();
+		
+		//_grpGraphicMap.visible = true;
 		_player.update();
 	}	
 
 	override public function draw():Void
 	{
-		_level.draw();	
+		//_level.draw();	
+		super.draw();
 		_player.draw();
 		
 		_player.drawHealth();
