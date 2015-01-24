@@ -1,7 +1,7 @@
 class Leaf extends flixel.FlxBasic
 {
  
-    private var MIN_LEAF_SIZE:Int = 6;
+    private var MIN_LEAF_SIZE:Int = 5;
  
     public var y:Int;
     public var x:Int;
@@ -74,7 +74,7 @@ class Leaf extends flixel.FlxBasic
                 rightChild.createRooms();
             }
 
-                  // if there are both left and right children in this Leaf, create a hallway between them
+            // if there are both left and right children in this Leaf, create a hallway between them
             if (leftChild != null && rightChild != null)
             {
                 createHall(leftChild.getRoom(), rightChild.getRoom());
@@ -85,11 +85,14 @@ class Leaf extends flixel.FlxBasic
             // this Leaf is the ready to make a room
             var roomSize:flixel.util.FlxPoint;
             var roomPos:flixel.util.FlxPoint;
+
             // the room can be between 3 x 3 tiles to the size of the leaf - 2.
-            roomSize = new flixel.util.FlxPoint(flixel.util.FlxRandom.floatRanged(3, width - 2), flixel.util.FlxRandom.floatRanged(3, height - 2));
+            roomSize = new flixel.util.FlxPoint(flixel.util.FlxRandom.intRanged(3, width - 2), flixel.util.FlxRandom.intRanged(3, height - 2));
             // place the room within the Leaf, but don't put it right 
             // against the side of the Leaf (that would merge rooms together)
-            roomPos = new flixel.util.FlxPoint(flixel.util.FlxRandom.floatRanged(1, width - roomSize.x - 1), flixel.util.FlxRandom.floatRanged(1, height - roomSize.y - 1));
+            var maxX:Int = cast width - roomSize.x - 1;
+            var maxY:Int = cast height - roomSize.y - 1;
+            roomPos = new flixel.util.FlxPoint(flixel.util.FlxRandom.intRanged(1, maxX), flixel.util.FlxRandom.intRanged(1, maxY));
             room = new flixel.util.FlxRect(x + roomPos.x, y + roomPos.y, roomSize.x, roomSize.y);
         }
     } 

@@ -36,7 +36,7 @@ class Player extends FlxObject
 		_sprite.animation.add("walkright", [0, 1], 5, true);
 		_sprite.animation.add("idle", [0], 5, true);
 		_sprite.animation.play("idle");
-		_sprite.scale.set(4, 4);
+		_sprite.scale.set(0.5, 0.5);
 		
 		_hpEmpty = new FlxSprite();
 		_hpEmpty.loadGraphic(AssetPaths.hp_empty__png, false, 16, 16);

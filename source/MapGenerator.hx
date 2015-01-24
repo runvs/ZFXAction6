@@ -1,5 +1,77 @@
 class MapGenerator
 {
+	public static function generateMapFromTree(tree:flixel.group.FlxTypedGroup<Leaf>):StringBuf
+	{
+		//we need to give every room a roomType and every hall a hallType
+		//for now, we do it random
+		var currentLeaf:Leaf;
+
+		//so dirty...
+		var listOfRooms:Array<flixel.util.FlxRect> = new Array<flixel.util.FlxRect>();
+		//var listOfTypes:flixel.group.FlxGroup;
+		var listOfTypes:Array<Int> = new Array<Int>();
+		//iterate over all leafes
+		for(currentLeaf in tree)
+		{
+			//get current room
+			var room:flixel.util.FlxRect = currentLeaf.room;
+			if(room != null)
+			{
+				//roll type for room
+				var roomType:Int = flixel.util.FlxRandom.intRanged(1, 5);
+				//put the roomtype value into the "map"
+				listOfRooms.push(room);
+				listOfTypes.push(roomType);
+			}
+		}
+
+		//generate the map string
+		var mapString:StringBuf = new StringBuf();
+
+		//really bad
+		for(y in 0 ... tree.members[0].height)
+		{
+			for(x in 0 ... tree.members[0].width)
+			{
+				//check every room :(
+				var type:Int = 0;
+				//trace(x + ","+y);
+				for(roomIndex in 0 ... listOfRooms.length)
+				{
+					var tmpRoom:flixel.util.FlxRect = listOfRooms[roomIndex];
+					//trace(x + "," + y + " in: " + tmpRoom.x + ", " + tmpRoom.y + " - (" + tmpRoom.width + ", " + tmpRoom.height +")");
+					if(isInRoom(x, y, tmpRoom))
+					{
+						type = listOfTypes[roomIndex];
+						//trace("yay");
+						break;
+					}
+				}
+
+				mapString.add(Std.string(type));
+				mapString.add(Std.string(","));
+			}
+			mapString.add(Std.string("\n"));
+		}
+
+		trace(mapString);
+		return mapString;
+		
+	}
+
+	public static function isInRoom(x:Int, y:Int, room:flixel.util.FlxRect):Bool
+	{
+		if(x > room.x && x < room.x + room.width)
+		{
+			if(y > room.y && y < room.y + room.height)
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 
 	//this function simply generates a list of rooms and connecting floors
 	//you can add this with a list of desired rooms in a funtion im going to write right away
@@ -13,7 +85,7 @@ class MapGenerator
   		var treeSplitted:Bool;
   		//these parameters will become changeable
 		var splitChance:Float = 0.75;
-		var MAX_LEAF_SIZE:Int = 20;
+		var MAX_LEAF_SIZE:Int = 12;
 
 		do
 		{
@@ -39,12 +111,9 @@ class MapGenerator
 		}
 		while(treeSplitted);		
 
-		return tree;
-	}
+		root.createRooms();
 
-	public static function generateRooms(tree:Leaf)
-	{
-		tree.createRooms();
+		return tree;
 	}
 
 	    //returns the number of rooms in the tree with this leaf 
@@ -65,15 +134,16 @@ class MapGenerator
     	return roomCount;
     }
 
+    //this is the original api
 	public static function generate(sizeX:Int, sizeY:Int):flixel.group.FlxGroup
 	{
 		var _mapData:flash.display.BitmapData;		// our map Data - we draw our map here to be turned into a tilemap later
 		var _grpGraphicMap:flixel.group.FlxGroup;	// group for holding the map sprite, so it stays behind the UI elements	
 		
-		_mapData = new flash.display.BitmapData(512, 512, false, 0xff000000);
+		_mapData = new flash.display.BitmapData(sizeX, sizeY, false, 0xff000000);
 		_grpGraphicMap =  new flixel.group.FlxGroup();
 
-		var MAX_LEAF_SIZE:Int = 20;
+		var MAX_LEAF_SIZE:Int = 12;
 		 
 		var _leafs:flixel.group.FlxTypedGroup<Leaf> = new flixel.group.FlxTypedGroup<Leaf>();
 		 
