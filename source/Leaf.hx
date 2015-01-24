@@ -121,7 +121,8 @@ class Leaf extends flixel.FlxBasic
                 return lRoom;
             else if (lRoom == null)
                 return rRoom;
-            else if (flixel.util.FlxRandom.chanceRoll(0.5)) //this is totally stupid, why do you write blogs 
+            //else if (flixel.util.FlxRandom.chanceRoll(0.5)) //this is totally stupid, why do you write blogs 
+            else if (flixel.util.FlxRandom.float() > 0.5)    
                 return lRoom;
             else
                 return rRoom;
@@ -146,8 +147,8 @@ class Leaf extends flixel.FlxBasic
         {
             if (h < 0)
             {
-                //if (flixel.util.FlxRandom.float() * 0.5)
-                if(flixel.util.FlxRandom.chanceRoll(0.5))
+                if (flixel.util.FlxRandom.float() > 0.5)
+                //if(flixel.util.FlxRandom.chanceRoll(0.5))
                 {
                     halls.push(new flixel.util.FlxRect(point2.x, point1.y, Math.abs(w), 1));
                     halls.push(new flixel.util.FlxRect(point2.x, point2.y, 1, Math.abs(h)));
@@ -160,7 +161,8 @@ class Leaf extends flixel.FlxBasic
             }
             else if (h > 0)
             {
-                if(flixel.util.FlxRandom.chanceRoll(0.5))
+                //if(flixel.util.FlxRandom.chanceRoll(0.5))
+                if (flixel.util.FlxRandom.float() > 0.5)
                 {
                     halls.push(new flixel.util.FlxRect(point2.x, point1.y, Math.abs(w), 1));
                     halls.push(new flixel.util.FlxRect(point2.x, point1.y, 1, Math.abs(h)));
@@ -180,7 +182,8 @@ class Leaf extends flixel.FlxBasic
         {
             if (h < 0)
             {
-                if(flixel.util.FlxRandom.chanceRoll(0.5))
+                //if(flixel.util.FlxRandom.chanceRoll(0.5))
+                if (flixel.util.FlxRandom.float() > 0.5)
                 {
                     halls.push(new flixel.util.FlxRect(point1.x, point2.y, Math.abs(w), 1));
                     halls.push(new flixel.util.FlxRect(point1.x, point2.y, 1, Math.abs(h)));
@@ -193,7 +196,8 @@ class Leaf extends flixel.FlxBasic
             }
             else if (h > 0)
             {
-                if(flixel.util.FlxRandom.chanceRoll(0.5))
+                //if(flixel.util.FlxRandom.chanceRoll(0.5))
+                if (flixel.util.FlxRandom.float() > 0.5)
                 {
                     halls.push(new flixel.util.FlxRect(point1.x, point1.y, Math.abs(w), 1));
                     halls.push(new flixel.util.FlxRect(point2.x, point1.y, 1, Math.abs(h)));

@@ -177,7 +177,7 @@ class PlayState extends FlxState
 	
 	public function StartFight (e:Enemy) : Void 
 	{
-		_battleSystem.StartBattle(e, _player);
+		//_battleSystem.StartBattle(e, _player);
 	}
 	
 }
