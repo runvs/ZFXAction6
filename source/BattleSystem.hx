@@ -36,10 +36,14 @@ class BattleSystem extends FlxObject
 	private var _enemySprite : FlxSprite;
 	
 	
+	private var _state : PlayState;
 	
-	public function new() 
+	
+	public function new(state:PlayState) 
 	{
 		super();
+		_state = state;
+		
 		_awaitInput = true;
 		active = false;
 		
@@ -53,15 +57,15 @@ class BattleSystem extends FlxObject
 		_btnAttack.set_width( 130 );
 		_btnAttack.scrollFactor = new FlxPoint(0, 0);
 		
-		_btnSpecial = new FlxButton(260, 450, "[S]pcial", PlayerAttack);
+		_btnSpecial = new FlxButton(260, 450, "[S]pcial", PlayerSpecial);
 		_btnSpecial.set_width( 130 );
 		_btnSpecial.scrollFactor = new FlxPoint(0, 0);
 		
-		_btnDefend = new FlxButton(410, 450, "[D]efend", PlayerAttack);
+		_btnDefend = new FlxButton(410, 450, "[D]efend", PlayerDefend);
 		_btnDefend.set_width( 130 );
 		_btnDefend.scrollFactor = new FlxPoint(0, 0);
 		
-		_btnFlee = new FlxButton(560, 450, "[F]lee", PlayerAttack);
+		_btnFlee = new FlxButton(560, 450, "[F]lee", PlayerFlee);
 		_btnFlee.set_width( 130 );
 		_btnFlee.scrollFactor = new FlxPoint(0, 0);
 		
@@ -177,14 +181,14 @@ class BattleSystem extends FlxObject
 	{
 		if (_awaitInput)
 		{
-			
 			DoEnemyAction();
 			BlockGUI();
+			trace ("flee");
 			if (_playerProperties.DoFlee(_enemyProperties))
 			{
-				
+				trace ("success");
+				active = false;
 			}
-			
 		}
 	}
 	

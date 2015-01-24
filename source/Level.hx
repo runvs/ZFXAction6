@@ -1,5 +1,6 @@
 import flixel.FlxG;
 import flixel.FlxObject;
+import flixel.group.FlxTypedGroup;
 import flixel.tile.FlxTile;
 
 class Level extends FlxObject
@@ -53,11 +54,9 @@ class Level extends FlxObject
 		
 		_grpEnemies.forEachAlive(checkEnemyTouching);
 		
-			//var newPotionList:FlxTypedGroup<Potion> = new FlxTypedGroup<Potion>();
-			//_listPotions.forEach(function(p:Potion) { if (p.alive) { newPotionList.add(p); } else { p.destroy(); } } );
-			//_listPotions = newPotionList;
-		//}
-		//
+		var newEnemyList : FlxTypedGroup<Enemy> = new FlxTypedGroup<Enemy>();
+		_grpEnemies.forEach(function(p:Enemy) { if (p.alive) { newEnemyList.add(p); } else { p.destroy(); } } );
+		_grpEnemies = newEnemyList;
 	}
 	
 	public override function draw():Void
