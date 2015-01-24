@@ -7,8 +7,8 @@ class MapGenerator
 		var currentLeaf:Leaf;
 
 		//so dirty...
+		var listOfHalls:Array<flixel.util.FlxRect> = new Array<flixel.util.FlxRect>();
 		var listOfRooms:Array<flixel.util.FlxRect> = new Array<flixel.util.FlxRect>();
-		//var listOfTypes:flixel.group.FlxGroup;
 		var listOfTypes:Array<Int> = new Array<Int>();
 		//iterate over all leafes
 		for(currentLeaf in tree)
@@ -18,17 +18,26 @@ class MapGenerator
 			if(room != null)
 			{
 				//roll type for room
-				var roomType:Int = flixel.util.FlxRandom.intRanged(1, 5);
+				var roomType:Int = flixel.util.FlxRandom.intRanged(1, 4);
 				//put the roomtype value into the "map"
 				listOfRooms.push(room);
 				listOfTypes.push(roomType);
+			}
+
+			var hall:flixel.util.FlxRect;
+			if(currentLeaf.halls != null)
+			{
+				for(hall in currentLeaf.halls)
+				{
+					listOfHalls.push(hall);
+				}				
 			}
 		}
 
 		//generate the map string
 		var mapString:StringBuf = new StringBuf();
 
-		//really bad
+		//really bad but hey i studied computer science twice!
 		for(y in 0 ... tree.members[0].height)
 		{
 			for(x in 0 ... tree.members[0].width)
@@ -48,6 +57,19 @@ class MapGenerator
 					}
 				}
 
+				var tmpHall:flixel.util.FlxRect;
+				for(tmpHall in listOfHalls)
+				{
+					if(isInHall(x, y, tmpHall))
+					{
+						if(type == 0)
+						{
+							type = 5;
+						}
+						break;
+					}
+				}
+
 				mapString.add(Std.string(type));
 				mapString.add(Std.string(","));
 			}
@@ -57,6 +79,19 @@ class MapGenerator
 		//trace(mapString);
 		return mapString;
 		
+	}
+
+	public static function isInHall(x:Int, y:Int, room:flixel.util.FlxRect):Bool
+	{
+		if(x >= room.x && x < room.x + room.width)
+		{
+			if(y >= room.y && y < room.y + room.height)
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	public static function isInRoom(x:Int, y:Int, room:flixel.util.FlxRect):Bool
