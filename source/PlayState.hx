@@ -29,27 +29,32 @@ class PlayState extends FlxState
 	private var _overlay : FlxSprite;
 	private var _inLevelChange : Bool;
 
-	/**
-	 * Function that is called up when to state is created to set it up. 
+	
+	 /* Function that is called up when to state is created to set it up. 
 	 */
 	override public function create():Void
 	{
 		super.create();
 		
 		_levelList = new FlxTypedGroup<Level>();
-		
+		_player = new Player();
 		SpawnNextLevel();
 		
 		_currentLevelNumber = 0;
 		
 	
-		_player = new Player();
 		
 		PlacePlayer();
 		FlxG.camera.follow(_player, FlxCamera.STYLE_TOPDOWN, new FlxPoint(), 10);
-		
 		_overlay = new FlxSprite();
 		_overlay.makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+		_overlay.alpha = 1.0;
+		
+		FlxTween.tween(_overlay, { alpha:0.0 }, 1.0);
+		_inLevelChange = false;
+	
+		_levelList.members[_currentLevelNumber].addPlayer(_player);
+		FlxG.camera.follow(_player, FlxCamera.STYLE_TOPDOWN, new FlxPoint(), 10);
 		_overlay.alpha = 1.0;
 		
 		FlxTween.tween(_overlay, { alpha:0.0 }, 1.0);
@@ -75,6 +80,7 @@ class PlayState extends FlxState
 		_levelList.members[_currentLevelNumber].update();
 		_overlay.update();
 		_player.update();
+	
 		FlxG.collide(_player, _levelList.members[_currentLevelNumber].map);
 		
 		trace (_inLevelChange);
