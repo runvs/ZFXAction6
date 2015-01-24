@@ -37,10 +37,10 @@ class Player extends FlxObject
 		_sprite.animation.add("idle", [0], 5, true);
 		_sprite.animation.play("idle");
 		_sprite.scale.set(0.5, 0.5);
-		_sprite.offset.set();
-		_sprite.origin.set();
-		width = 16;
-		height = 16;
+		_sprite.offset.set(2,2);
+		_sprite.origin.set(2,2);
+		width = 12;
+		height = 12;
 		
 		
 		

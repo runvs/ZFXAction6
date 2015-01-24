@@ -5,6 +5,7 @@ import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.FlxState;
+import flixel.group.FlxTypedGroup;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxMath;
@@ -16,11 +17,11 @@ import flixel.util.FlxRandom;
  */
 class PlayState extends FlxState
 {
-	private var _level:Level;
+	private var _levelList : FlxTypedGroup<Level>;
+	private var _currentLevelNumber : Int;
 	
 	private var _player : Player;
-	
-	var map : flixel.tile.FlxTilemap;
+
 
 	/**
 	 * Function that is called up when to state is created to set it up. 
@@ -28,32 +29,22 @@ class PlayState extends FlxState
 	override public function create():Void
 	{
 		super.create();
-		//_level = new Level(this, 5, 5);
-		//add(MapGenerator.generate(64, 64));
+		
+		_levelList = new FlxTypedGroup<Level>();
+		
+		var level : Level = new Level(this, 32, 32);
+		_levelList.add(level);
+		
+		_currentLevelNumber = 0;
+		
 	
-		
-		map = new flixel.tile.FlxTilemap();
-
-		map.loadMap(MapGenerator.generateMapFromTree(MapGenerator.generateTree(32, 32)).toString(), AssetPaths.SpriteSheetA__png, 16, 16, 0, 0, 0);
-		map.setTileProperties(0, FlxObject.ANY);
-		map.setTileProperties(1, FlxObject.NONE);
-		map.setTileProperties(2, FlxObject.NONE);
-		map.setTileProperties(3, FlxObject.NONE);
-		map.setTileProperties(4, FlxObject.NONE);
-		map.setTileProperties(5, FlxObject.NONE);
-		map.scale.set(1, 1);
-		
-		add(map);	
-
-		
-			
 		_player = new Player();
 		
-		for (i in 0 ... map.widthInTiles)
+		for (i in 0 ... _levelList.members[_currentLevelNumber].map.widthInTiles)
 		{
-			for (j in 0 ... map.heightInTiles)
+			for (j in 0 ... _levelList.members[_currentLevelNumber].map.heightInTiles)
 			{
-				if ( map.getTile(i, j) != 0)
+				if ( _levelList.members[_currentLevelNumber].map.getTile(i, j) != 0)
 				{
 					_player.setPosition(16 * i, 16 * j);
 					break;
@@ -79,17 +70,27 @@ class PlayState extends FlxState
 	override public function update():Void
 	{
 		super.update();
-		//_level.update();
+		_levelList.members[_currentLevelNumber].update();
 		
 		//_grpGraphicMap.visible = true;
 		_player.update();
-		FlxG.collide(_player, map);
+		FlxG.collide(_player, _levelList.members[_currentLevelNumber].map);
 	}	
+	
+	private function MoveLevelDown() : Void 
+	{
+		if (_currentLevelNumber + 1 >= _levelList.length)
+		{
+			
+		}
+	}
 
 	override public function draw():Void
 	{
-		//_level.draw();	
 		super.draw();
+		
+		_levelList.members[_currentLevelNumber].draw();
+		
 		_player.draw();
 		
 		_player.drawHealth();

@@ -2,40 +2,44 @@ import flixel.FlxObject;
 
 class Level extends FlxObject
 {
-	private var _tileList:flixel.group.FlxTypedGroup<Tile>;
-
+	
+		
+	public var map : flixel.tile.FlxTilemap;
+	
 	public function new(state:PlayState, sizeX:Int, sizeY:Int)
 	{
 		super();
 
 		initializeLevel(sizeX, sizeY);
 	}
+	
+	
+	
 
 	private function initializeLevel(sizeX:Int, sizeY:Int):Void
 	{
-		_tileList = new flixel.group.FlxTypedGroup<Tile>();
-		// for (i in 0 ... sizeX) 
-		// {
-		// 	for (j in 0 ... sizeY) 
-		// 	{
-		// 		_tileList.add(new IdentityTile.IdentiyTile());
-		// 	}
-		// }
-		MapGenerator.generate(128, 128);
+			
+		map = new flixel.tile.FlxTilemap();
+
+		map.loadMap(MapGenerator.generateMapFromTree(MapGenerator.generateTree(32, 32)).toString(), AssetPaths.SpriteSheetA__png, 16, 16, 0, 0, 0);
+		map.setTileProperties(0, FlxObject.ANY);
+		map.setTileProperties(1, FlxObject.NONE);
+		map.setTileProperties(2, FlxObject.NONE);
+		map.setTileProperties(3, FlxObject.NONE);
+		map.setTileProperties(4, FlxObject.NONE);
+		map.setTileProperties(5, FlxObject.NONE);
+		map.scale.set(1, 1);
 	}
 
 	public override function update():Void
 	{
 		super.update();
+		map.update();
 	}
 
 	public override function draw():Void
 	{
-		_tileList.forEach(function(t : Tile):Void{t.draw();});
+		map.draw();
 	}
 	
-	public function getTile(x:Int, y:Int):Tile
-	{
-		return null;
-	}
 }
