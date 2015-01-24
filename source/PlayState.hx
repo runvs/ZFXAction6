@@ -28,7 +28,7 @@ class PlayState extends FlxState
 		super.create();
 		_level = new Level(this, 5, 5);
 		add(MapGenerator.generate(512, 512));
-_		player = new Player();
+		_player = new Player();
 		
 		FlxG.camera.follow(_player, FlxCamera.STYLE_TOPDOWN, new FlxPoint(), 10);
 	}

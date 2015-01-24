@@ -32,7 +32,10 @@ class Player extends FlxObject
 	{
 		super();
 		_sprite = new FlxSprite();
-		_sprite.loadGraphic(AssetPaths.player__png, false, 32, 32);
+		_sprite.loadGraphic(AssetPaths.player__png, true, 32, 32);
+		_sprite.animation.add("walkright", [0, 1], 5, true);
+		_sprite.animation.add("idle", [0], 5, true);
+		_sprite.animation.play("idle");
 		_sprite.scale.set(4, 4);
 		
 		_hpEmpty = new FlxSprite();
@@ -60,52 +63,11 @@ class Player extends FlxObject
 	
 	public override function update():Void
 	{
-		
-		_totalTime += FlxG.elapsed;
-		
-		var up:Bool = FlxG.keys.anyPressed(["W", "UP"]);
-        var down:Bool = FlxG.keys.anyPressed(["S", "DOWN"]);
-        var left:Bool = FlxG.keys.anyPressed(["A", "LEFT"]);
-        var right:Bool = FlxG.keys.anyPressed(["D", "RIGHT"]);
-		
-		if (left)
-		{
-			//velocity.x -= GameProperties.PlayerMovementVelocityAdd / FlxG.timeScale;
-			x -= GameProperties.PlayerMovementVelocityAdd * FlxG.elapsed;
-		}
-		else if (right)
-		{
-			//velocity.x += GameProperties.PlayerMovementVelocityAdd / FlxG.timeScale;
-			x += GameProperties.PlayerMovementVelocityAdd * FlxG.elapsed;
-		}
-		else if (up)
-		{
-			//velocity.y -= GameProperties.PlayerMovementVelocityAdd / FlxG.timeScale;
-			y -= GameProperties.PlayerMovementVelocityAdd * FlxG.elapsed;
-		}
-		else if (down)
-		{
-			//velocity.y += GameProperties.PlayerMovementVelocityAdd / FlxG.timeScale;
-			y += GameProperties.PlayerMovementVelocityAdd * FlxG.elapsed;
-		}
-      
-		
-		velocity.x = velocity.x * 0.9;
-		velocity.y = velocity.y * 0.9;
-		
-		var v : FlxVector = new FlxVector(velocity.x, velocity.y);
-		
 		super.update();
-		
-		_sprite.setPosition(x, y);
-		
-		
-		for (j in 0 ... _healthOffset.length)
-        {
-			_healthOffset.members[j].x = Math.sin(1.5 * (_totalTime * Math.sqrt(j+2) + j)) * 3;
-			_healthOffset.members[j].y = Math.sin(1.25 * (_totalTime + j)) * 5;
-            
-        }
+		_sprite.update();
+	
+		DoMovement();
+		DoKoetbullaWobble();
 		
 	}
 	
@@ -129,6 +91,54 @@ class Player extends FlxObject
 			_hpFull.x = 20 + i * 64 + _healthOffset.members[i].x;
 			_hpFull.y = 550 + _healthOffset.members[i].y;
 			_hpFull.draw();
+		}
+	}
+	
+	function DoMovement():Void 
+	{
+		var up:Bool = FlxG.keys.anyPressed(["W", "UP"]);
+		var down:Bool = FlxG.keys.anyPressed(["S", "DOWN"]);
+		var left:Bool = FlxG.keys.anyPressed(["A", "LEFT"]);
+		var right:Bool = FlxG.keys.anyPressed(["D", "RIGHT"]);
+		
+		if (left)
+		{
+			//velocity.x -= GameProperties.PlayerMovementVelocityAdd / FlxG.timeScale;
+			x -= GameProperties.PlayerMovementVelocityAdd * FlxG.elapsed;
+		}
+		else if (right)
+		{
+			//velocity.x += GameProperties.PlayerMovementVelocityAdd / FlxG.timeScale;
+			x += GameProperties.PlayerMovementVelocityAdd * FlxG.elapsed;
+			_sprite.animation.play("walkright");
+		}
+		else if (up)
+		{
+			//velocity.y -= GameProperties.PlayerMovementVelocityAdd / FlxG.timeScale;
+			y -= GameProperties.PlayerMovementVelocityAdd * FlxG.elapsed;
+		}
+		else if (down)
+		{
+			//velocity.y += GameProperties.PlayerMovementVelocityAdd / FlxG.timeScale;
+			y += GameProperties.PlayerMovementVelocityAdd * FlxG.elapsed;
+		}
+		else
+		{
+			_sprite.animation.play("idle");
+		}
+		
+		var v : FlxVector = new FlxVector(velocity.x, velocity.y);
+		
+		_sprite.setPosition(x, y);
+	}
+	
+	function DoKoetbullaWobble():Void 
+	{
+		_totalTime += FlxG.elapsed;
+		for (j in 0 ... _healthOffset.length)
+		{
+			_healthOffset.members[j].x = Math.sin(1.5 * (_totalTime * Math.sqrt(j+2) + j)) * 3;
+			_healthOffset.members[j].y = Math.sin(1.25 * (_totalTime + j)) * 5;
 		}
 	}
 	
