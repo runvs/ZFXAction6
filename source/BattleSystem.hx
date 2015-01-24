@@ -238,7 +238,7 @@ class BattleSystem extends FlxObject
 	
 	public function DoEnemyAction() : Void 
 	{
-		
+		_playerProperties.DoAddSpecial();
 	}
 	
 	
@@ -268,6 +268,7 @@ class BattleSystem extends FlxObject
 		active = true;
 		_playerProperties = p.GetFightProperties();
 		_enemyProperties = p.GetFightProperties();
+		
 	}
 	
 }

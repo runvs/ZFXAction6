@@ -54,13 +54,15 @@ class FightProperties
 		var evadeChance : Float = target.EvadeChance * ((target.IsDefending) ? 2.0 : 1.0);	// double the chance if the target is definding
 		
 	
-		// TODO hitchance 
+		
 		if (!FlxRandom.chanceRoll(evadeChance*100))
 		{
-			// target did not evade
-			target.HealthCurrent -= damage;
+			if (FlxRandom.chanceRoll(AttackHitChance * 100))
+			{
+				// target did not evade
+				target.HealthCurrent -= damage;
+			}
 		}
-		
 	}
 	
 	
@@ -69,11 +71,20 @@ class FightProperties
 		this.AttackDamage *= 2.0;	// a simple double damage attack
 		DoAttack(target);
 		this.AttackDamage /= 2.0;	
+		SpecialAttackCollected = -1;
 	}
 	
 	public function DoFlee (target:FightProperties ) : Bool 
 	{
 		return FlxRandom.chanceRoll(FleeChance*100);
+	}
+
+	public function DoAddSpecial () : Void 
+	{
+		if ( SpecialAttackCollected < SpecialAttackNeeded)
+		{
+			SpecialAttackCollected++;
+		}
 	}
 	
 }

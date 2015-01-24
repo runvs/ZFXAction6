@@ -94,7 +94,11 @@ class PlayState extends FlxState
 			super.update();
 			_levelList.members[_currentLevelNumber].update();
 			_overlay.update();
-			_player.update();
+			
+			if (!_inLevelChange)
+			{
+				_player.update();
+			}
 			
 			FlxG.collide(_player, _levelList.members[_currentLevelNumber].map);
 			
