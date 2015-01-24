@@ -63,7 +63,7 @@ class PlayState extends FlxState
 		FlxTween.tween(_overlay, { alpha:0.0 }, 1.0);
 		_inLevelChange = false;
 		
-		_battleSystem = new BattleSystem();
+		_battleSystem = new BattleSystem(this);
 		
 	}
 	

@@ -7,7 +7,7 @@ import flixel.util.FlxRandom;
  */
 class FightProperties
 {
-
+	
 	public function new() 
 	{
 		AttackDamage = 1;
@@ -54,7 +54,8 @@ class FightProperties
 		var evadeChance : Float = target.EvadeChance * ((target.IsDefending) ? 2.0 : 1.0);	// double the chance if the target is definding
 		
 	
-		if (!FlxRandom.chanceRoll(evadeChance))
+		// TODO hitchance 
+		if (!FlxRandom.chanceRoll(evadeChance*100))
 		{
 			// target did not evade
 			target.HealthCurrent -= damage;
@@ -72,9 +73,7 @@ class FightProperties
 	
 	public function DoFlee (target:FightProperties ) : Bool 
 	{
-		return FlxRandom.chanceRoll(FleeChance);
-		
-		
+		return FlxRandom.chanceRoll(FleeChance*100);
 	}
 	
 }
