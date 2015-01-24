@@ -11,7 +11,7 @@ class Leaf extends flixel.FlxBasic
     public var leftChild:Leaf; // the Leaf's left child Leaf
     public var rightChild:Leaf; // the Leaf's right child Leaf
     public var room:flixel.util.FlxRect; // the room that is inside this Leaf
-    public var halls:List<flixel.util.FlxRect>; // hallways to connect this Leaf to other Leafs
+    public var halls:Array<flixel.util.FlxRect>; // hallways to connect this Leaf to other Leafs
  
     public function new(X:Int, Y:Int, Width:Int, Height:Int)
     {
@@ -134,9 +134,9 @@ class Leaf extends flixel.FlxBasic
         // this looks pretty complicated, but it's just trying to figure out which point is where and then either draw a straight line, or a pair of lines to make a right-angle to connect them.
         // you could do some extra logic to make your halls more bendy, or do some more advanced things if you wanted.
      
-        halls = new List<flixel.util.FlxRect>();
+        halls = new Array<flixel.util.FlxRect>();
      
-        var point1:flixel.util.FlxPoint = new flixel.util.FlxPoint(flixel.util.FlxRandom.floatRanged(l.left + 1, l.right - 2), flixel.util.FlxRandom.floatRanged(l.top + 1, l.bottom - 2));//flixel.util.FlxPoint(Registry.randomNumber(l.left + 1, l.right - 2), Registry.randomNumber(l.top + 1, l.bottom - 2));
+        var point1:flixel.util.FlxPoint = new flixel.util.FlxPoint(flixel.util.FlxRandom.floatRanged(l.left + 1, l.right - 2), flixel.util.FlxRandom.floatRanged(l.top + 1, l.bottom - 2));
         var point2:flixel.util.FlxPoint = new flixel.util.FlxPoint(flixel.util.FlxRandom.floatRanged(r.left + 1, r.right - 2), flixel.util.FlxRandom.floatRanged(r.top + 1, r.bottom - 2));
      
         var w:Float = point2.x - point1.x;
@@ -149,31 +149,31 @@ class Leaf extends flixel.FlxBasic
                 //if (flixel.util.FlxRandom.float() * 0.5)
                 if(flixel.util.FlxRandom.chanceRoll(0.5))
                 {
-                    halls.add(new flixel.util.FlxRect(point2.x, point1.y, Math.abs(w), 1));
-                    halls.add(new flixel.util.FlxRect(point2.x, point2.y, 1, Math.abs(h)));
+                    halls.push(new flixel.util.FlxRect(point2.x, point1.y, Math.abs(w), 1));
+                    halls.push(new flixel.util.FlxRect(point2.x, point2.y, 1, Math.abs(h)));
                 }
                 else
                 {
-                    halls.add(new flixel.util.FlxRect(point2.x, point2.y, Math.abs(w), 1));
-                    halls.add(new flixel.util.FlxRect(point1.x, point2.y, 1, Math.abs(h)));
+                    halls.push(new flixel.util.FlxRect(point2.x, point2.y, Math.abs(w), 1));
+                    halls.push(new flixel.util.FlxRect(point1.x, point2.y, 1, Math.abs(h)));
                 }
             }
             else if (h > 0)
             {
                 if(flixel.util.FlxRandom.chanceRoll(0.5))
                 {
-                    halls.add(new flixel.util.FlxRect(point2.x, point1.y, Math.abs(w), 1));
-                    halls.add(new flixel.util.FlxRect(point2.x, point1.y, 1, Math.abs(h)));
+                    halls.push(new flixel.util.FlxRect(point2.x, point1.y, Math.abs(w), 1));
+                    halls.push(new flixel.util.FlxRect(point2.x, point1.y, 1, Math.abs(h)));
                 }
                 else
                 {
-                    halls.add(new flixel.util.FlxRect(point2.x, point2.y, Math.abs(w), 1));
-                    halls.add(new flixel.util.FlxRect(point1.x, point1.y, 1, Math.abs(h)));
+                    halls.push(new flixel.util.FlxRect(point2.x, point2.y, Math.abs(w), 1));
+                    halls.push(new flixel.util.FlxRect(point1.x, point1.y, 1, Math.abs(h)));
                 }
             }
             else // if (h == 0)
             {
-                halls.add(new flixel.util.FlxRect(point2.x, point2.y, Math.abs(w), 1));
+                halls.push(new flixel.util.FlxRect(point2.x, point2.y, Math.abs(w), 1));
             }
         }
         else if (w > 0)
@@ -182,42 +182,42 @@ class Leaf extends flixel.FlxBasic
             {
                 if(flixel.util.FlxRandom.chanceRoll(0.5))
                 {
-                    halls.add(new flixel.util.FlxRect(point1.x, point2.y, Math.abs(w), 1));
-                    halls.add(new flixel.util.FlxRect(point1.x, point2.y, 1, Math.abs(h)));
+                    halls.push(new flixel.util.FlxRect(point1.x, point2.y, Math.abs(w), 1));
+                    halls.push(new flixel.util.FlxRect(point1.x, point2.y, 1, Math.abs(h)));
                 }
                 else
                 {
-                    halls.add(new flixel.util.FlxRect(point1.x, point1.y, Math.abs(w), 1));
-                    halls.add(new flixel.util.FlxRect(point2.x, point2.y, 1, Math.abs(h)));
+                    halls.push(new flixel.util.FlxRect(point1.x, point1.y, Math.abs(w), 1));
+                    halls.push(new flixel.util.FlxRect(point2.x, point2.y, 1, Math.abs(h)));
                 }
             }
             else if (h > 0)
             {
                 if(flixel.util.FlxRandom.chanceRoll(0.5))
                 {
-                    halls.add(new flixel.util.FlxRect(point1.x, point1.y, Math.abs(w), 1));
-                    halls.add(new flixel.util.FlxRect(point2.x, point1.y, 1, Math.abs(h)));
+                    halls.push(new flixel.util.FlxRect(point1.x, point1.y, Math.abs(w), 1));
+                    halls.push(new flixel.util.FlxRect(point2.x, point1.y, 1, Math.abs(h)));
                 }
                 else
                 {
-                    halls.add(new flixel.util.FlxRect(point1.x, point2.y, Math.abs(w), 1));
-                    halls.add(new flixel.util.FlxRect(point1.x, point1.y, 1, Math.abs(h)));
+                    halls.push(new flixel.util.FlxRect(point1.x, point2.y, Math.abs(w), 1));
+                    halls.push(new flixel.util.FlxRect(point1.x, point1.y, 1, Math.abs(h)));
                 }
             }
             else // if (h == 0)
             {
-                halls.add(new flixel.util.FlxRect(point1.x, point1.y, Math.abs(w), 1));
+                halls.push(new flixel.util.FlxRect(point1.x, point1.y, Math.abs(w), 1));
             }
         }
         else // if (w == 0)
         {
             if (h < 0)
             {
-                halls.add(new flixel.util.FlxRect(point2.x, point2.y, 1, Math.abs(h)));
+                halls.push(new flixel.util.FlxRect(point2.x, point2.y, 1, Math.abs(h)));
             }
             else if (h > 0)
             {
-                halls.add(new flixel.util.FlxRect(point1.x, point1.y, 1, Math.abs(h)));
+                halls.push(new flixel.util.FlxRect(point1.x, point1.y, 1, Math.abs(h)));
             }
         }
     }    
