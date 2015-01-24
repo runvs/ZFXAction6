@@ -14,20 +14,19 @@ class Level extends FlxObject
 	private function initializeLevel(sizeX:Int, sizeY:Int):Void
 	{
 		_tileList = new flixel.group.FlxTypedGroup<Tile>();
-		for (i in 0 ... sizeX) 
-		{
-			for (j in 0 ... sizeY) 
-			{
-				_tileList.add(new IdentityTile.IdentiyTile());
-			}
-		}
-		//MapGenerator.generateMap();
+		// for (i in 0 ... sizeX) 
+		// {
+		// 	for (j in 0 ... sizeY) 
+		// 	{
+		// 		_tileList.add(new IdentityTile.IdentiyTile());
+		// 	}
+		// }
+		MapGenerator.generate(128, 128);
 	}
 
 	public override function update():Void
 	{
 		super.update();
-		trace("Level::update()");
 	}
 
 	public override function draw():Void

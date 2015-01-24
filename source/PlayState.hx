@@ -21,6 +21,7 @@ class PlayState extends FlxState
 		super.create();
 
 		_level = new Level(this, 5, 5);
+		add(MapGenerator.generate(512, 512));
 	}
 	
 	/**
@@ -38,11 +39,14 @@ class PlayState extends FlxState
 	override public function update():Void
 	{
 		super.update();
-		_level.update();
+		//_level.update();
+		
+		//_grpGraphicMap.visible = true;
 	}	
 
 	override public function draw():Void
 	{
-		_level.draw();	
+		//_level.draw();	
+		super.draw();
 	}
 }
