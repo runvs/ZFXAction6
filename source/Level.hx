@@ -37,9 +37,10 @@ class Level extends FlxObject
 		super.update();
 		map.update();
 	}
-
+	
 	public override function draw():Void
 	{
+		//trace ("draw");
 		map.draw();
 	}
 	

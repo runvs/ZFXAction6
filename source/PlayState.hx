@@ -28,6 +28,10 @@ class PlayState extends FlxState
 	 */
 	override public function create():Void
 	{
+		try 
+		{
+			
+		
 		super.create();
 		
 		_levelList = new FlxTypedGroup<Level>();
@@ -39,19 +43,13 @@ class PlayState extends FlxState
 	
 		_player = new Player();
 		
-		for (i in 0 ... _levelList.members[_currentLevelNumber].map.widthInTiles)
-		{
-			for (j in 0 ... _levelList.members[_currentLevelNumber].map.heightInTiles)
-			{
-				if ( _levelList.members[_currentLevelNumber].map.getTile(i, j) != 0)
-				{
-					_player.setPosition(16 * i, 16 * j);
-					break;
-				}
-			}
-		}
-		
+		PlacePlayer();
 		FlxG.camera.follow(_player, FlxCamera.STYLE_TOPDOWN, new FlxPoint(), 10);
+			}
+		catch (msg : String)
+		{
+			trace (msg);
+		}
 	}
 	
 	/**
@@ -68,12 +66,28 @@ class PlayState extends FlxState
 	 */
 	override public function update():Void
 	{
+		try
+		{
 		super.update();
 		_levelList.members[_currentLevelNumber].update();
 		
-		//_grpGraphicMap.visible = true;
 		_player.update();
 		FlxG.collide(_player, _levelList.members[_currentLevelNumber].map);
+		
+		
+		// To 'close' the interior, black needs to be wall too, index 0.
+		var px : Int = cast _player.x / 16;
+		var py : Int = cast _player.y / 16;
+		
+		if (_levelList.members[_currentLevelNumber].map.getTile(px, py) == 1)
+		{
+			MoveLevelDown();
+		}
+		}
+		catch (msg : String)
+		{
+			trace (msg);
+		}
 	}	
 	
 	private function MoveLevelDown() : Void 
@@ -83,6 +97,7 @@ class PlayState extends FlxState
 			SpawnNextLevel();
 		}
 		_currentLevelNumber++;
+		PlacePlayer();
 	}
 	
 	private function MoveLevelUp() : Void 
@@ -90,6 +105,7 @@ class PlayState extends FlxState
 		if (_currentLevelNumber != 0)
 		{
 			_currentLevelNumber--;
+			PlacePlayer();
 		}		
 	}
 	
@@ -98,15 +114,27 @@ class PlayState extends FlxState
 		var level : Level = new Level(this, 32, 32);
 		_levelList.add(level);
 	}
+	
+	function PlacePlayer():Void 
+	{
+		for (i in 0 ... _levelList.members[_currentLevelNumber].map.widthInTiles)
+		{
+			for (j in 0 ... _levelList.members[_currentLevelNumber].map.heightInTiles)
+			{
+				if ( _levelList.members[_currentLevelNumber].map.getTile(i, j) != 0)
+				{
+					_player.setPosition(16 * i, 16 * j);
+					break;
+				}
+			}
+		}
+	}
 
 	override public function draw():Void
 	{
 		super.draw();
-		
 		_levelList.members[_currentLevelNumber].draw();
-		
 		_player.draw();
-		
 		_player.drawHealth();
 	}
 }
