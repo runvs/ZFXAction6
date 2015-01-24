@@ -166,6 +166,10 @@ class BattleSystem extends FlxObject
 	
 	private function getInput() : Void 
 	{
+		if(FlxG.keys.justPressed.K)
+		{
+			trace(_state._itemGenerator.generateDrop());
+		}
 		if ( FlxG.keys.justPressed.A)
 		{
 			PlayerAttack();

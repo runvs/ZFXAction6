@@ -20,7 +20,7 @@ class Enemy extends flixel.FlxSprite
 		origin.set(2,2);
 		width = 12;
 		height = 12;
-		
+
 		_brain = new StupidEnemyBrain(idle);
 		_idleTmr = 0;
 		playerPos = flixel.util.FlxPoint.get();	
