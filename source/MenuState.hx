@@ -17,7 +17,6 @@ class MenuState extends FlxState
 	 */
 	override public function create():Void
 	{
-		
 		super.create();
 		
 		#if flash
@@ -43,6 +42,6 @@ class MenuState extends FlxState
 	override public function update():Void
 	{
 		super.update();
-		FlxG.switchState(new PlayState());
+		FlxG.switchState(new CutSceneIntro());
 	}	
 }
