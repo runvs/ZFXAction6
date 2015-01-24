@@ -4,6 +4,9 @@ import flixel.FlxBasic;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
+import flixel.text.FlxText;
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
 import flixel.ui.FlxButton;
 import flixel.util.FlxColorUtil;
 import flixel.util.FlxPoint;
@@ -39,6 +42,8 @@ class BattleSystem extends FlxObject
 	private var _state : PlayState;
 	
 	public var _lostBattle : Bool = false;
+	
+	private var _infoString : FlxText;
 	
 	public function new(state:PlayState) 
 	{
@@ -103,8 +108,26 @@ class BattleSystem extends FlxObject
 		_enemyHealth.setPosition(500, 150);
 		_enemyHealth.scrollFactor.set();
 		
+		_infoString = new FlxText(0, 0, 200, "", 24);
+		_infoString.alpha = 0;
 		
 	}
+	
+	private function ShowInfoString (s : String, onPlayer:Bool) : Void 
+	{
+		if (onPlayer)
+		{
+			_infoString.setPosition(250, 225);
+		}
+		else 
+		{
+			_infoString.setPosition(500, 125);
+		}
+		_infoString.text = s;
+		_infoString.alpha = 1.0;
+		FlxTween.tween(_infoString, { y : y - 100, alpha : 0.0 }, 1.0);
+	}
+	
 	
 	public override function update () : Void 
 	{
@@ -122,6 +145,7 @@ class BattleSystem extends FlxObject
 		ScaleHealthBars();
 		
 		CheckActorHealth();
+		_infoString.update();
 		
 		_btnSpecial.text = "[S]pecial (" + (_playerProperties.SpecialAttackNeeded - _playerProperties.SpecialAttackCollected) + ")";
 	}
@@ -165,10 +189,33 @@ class BattleSystem extends FlxObject
 	{
 		if (_awaitInput)
 		{
-			DoEnemyAction();
-			_playerProperties.DoAttack(_enemyProperties);
+			
 			
 			BlockGUI();
+			FlxTween.tween(_playerSprite, { x : _enemySprite.x, y:_enemySprite.y }, 0.75, { ease : FlxEase.bounceOut, 
+			complete : function (t:FlxTween) : Void 
+			{ 
+				FlxTween.tween(_playerSprite, { x : 200, y: 300 }, 0.5 ); 
+				var hasHit : Int = _playerProperties.DoAttack(_enemyProperties);
+				
+				if (hasHit != 0)
+				{
+					ShowInfoString(Std.string(hasHit), false);
+				}
+				else 
+				{
+					ShowInfoString("Evade", false);
+				}
+			} 
+			} );
+				
+			var  t: FlxTimer  = new FlxTimer(1.25, function (t:FlxTimer) : Void 
+			{
+				if (_enemyProperties.HealthCurrent > 0)
+				{
+					DoEnemyAction();
+				}
+			});
 		}
 	}
 		
@@ -202,12 +249,28 @@ class BattleSystem extends FlxObject
 		{
 			DoEnemyAction();
 			BlockGUI();
-			trace ("flee");
-			if (_playerProperties.DoFlee(_enemyProperties))
+			var  t: FlxTimer  = new FlxTimer(1.75, function (t:FlxTimer) : Void 
 			{
-				trace ("success");
-				active = false;
-			}
+				// wait until the enemy's attack is finished, then try to flee 
+				
+				FlxTween.tween(_playerSprite, { x: 100 } , 0.5);
+				
+				if (_playerProperties.DoFlee(_enemyProperties))
+				{
+					
+					ShowInfoString("Flee", true);
+					var t: FlxTimer = new FlxTimer(0.5, function(t:FlxTimer) : Void { active = false; } );
+				}
+				else
+				{
+					ShowInfoString("No Escape", true);
+					var t: FlxTimer = new FlxTimer(0.5, function (t: FlxTimer) : Void 
+					{
+						FlxTween.tween(_playerSprite, { x: 200 } , 0.25);
+					});
+					BlockGUI();
+				}
+			});
 		}
 	}
 	
@@ -220,18 +283,21 @@ class BattleSystem extends FlxObject
 	function BlockGUI():Void 
 	{
 		_awaitInput = false;
-		var t : FlxTimer = new FlxTimer(1.0, function (t:FlxTimer) : Void { _awaitInput = true; } );
+		var t : FlxTimer = new FlxTimer(1.5, function (t:FlxTimer) : Void { _awaitInput = true; } );
 	}
 	
 	function CheckActorHealth():Void 
 	{
-		if (_playerProperties.HealthCurrent <= 0)
+		if (_awaitInput)
 		{
-			LooseBattle();
-		}
-		else if (_enemyProperties.HealthCurrent <= 0)
-		{
-			WinBattle();
+			if (_playerProperties.HealthCurrent <= 0)
+			{
+				LooseBattle();
+			}
+			else if (_enemyProperties.HealthCurrent <= 0)
+			{
+				WinBattle();
+			}
 		}
 	}
 	
@@ -239,6 +305,23 @@ class BattleSystem extends FlxObject
 	public function DoEnemyAction() : Void 
 	{
 		_playerProperties.DoAddSpecial();
+		BlockGUI();
+		FlxTween.tween(_enemySprite, { x : _playerSprite.x, y:_playerSprite.y }, 0.75, { ease : FlxEase.bounceOut, 
+		complete : function (t:FlxTween) : Void 
+		{ 
+			FlxTween.tween(_enemySprite, { x : 500, y: 200 }, 0.5 ); 
+			var hasHit : Int = _playerProperties.DoAttack(_enemyProperties);
+				
+				if (hasHit != 0)
+				{
+					ShowInfoString(Std.string(hasHit), true);
+				}
+				else 
+				{
+					ShowInfoString("Evade", true);
+				}
+		} 
+		} );
 	}
 	
 	
@@ -248,8 +331,9 @@ class BattleSystem extends FlxObject
 		{
 			_background.draw();
 			
-			_playerSprite.draw();
 			_enemySprite.draw();
+			_playerSprite.draw();
+			
 			
 			_playerHealth.draw();
 			_enemyHealth.draw();
@@ -258,6 +342,7 @@ class BattleSystem extends FlxObject
 			_btnDefend.draw();
 			_btnSpecial.draw();
 			_btnFlee.draw();
+			_infoString.draw();
 			
 			
 		}

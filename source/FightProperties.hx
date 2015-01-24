@@ -12,7 +12,7 @@ class FightProperties
 	{
 		AttackDamage = 1;
 		AttackHitChance = 0.75;
-		EvadeChance = 0.05;
+		EvadeChance = 0.025;
 		SpecialAttackDamage = 3;
 		SpecialAttackNeeded = 3;
 		SpecialAttackCollected = 0;
@@ -45,7 +45,7 @@ class FightProperties
 	public var FleeChance : Float; 	
 	
 	
-	public function DoAttack (target:FightProperties)
+	public function DoAttack (target:FightProperties) : Int
 	{
 		
 		// calculate values
@@ -61,8 +61,11 @@ class FightProperties
 			{
 				// target did not evade
 				target.HealthCurrent -= damage;
+				return Math.round(damage);
 			}
 		}
+		
+		return 0;
 	}
 	
 	
