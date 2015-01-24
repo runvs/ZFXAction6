@@ -1,3 +1,4 @@
+import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.tile.FlxTile;
 
@@ -8,11 +9,14 @@ class Level extends FlxObject
 	private var _player:Player;
 
 	public var map : flixel.tile.FlxTilemap;
+	private var _state :PlayState;
 	
 	public function new(state:PlayState, sizeX:Int, sizeY:Int)
 	{
 		super();
-
+	
+		_state = state;
+		
 		initializeLevel(sizeX, sizeY);
 		_grpEnemies = new flixel.group.FlxTypedGroup<Enemy>();
 	}
@@ -46,10 +50,19 @@ class Level extends FlxObject
 		_grpEnemies.update();
 		flixel.FlxG.collide(_grpEnemies, map);
 		_grpEnemies.forEachAlive(checkEnemyVision);
+		
+		_grpEnemies.forEachAlive(checkEnemyTouching);
+		
+			//var newPotionList:FlxTypedGroup<Potion> = new FlxTypedGroup<Potion>();
+			//_listPotions.forEach(function(p:Potion) { if (p.alive) { newPotionList.add(p); } else { p.destroy(); } } );
+			//_listPotions = newPotionList;
+		//}
+		//
 	}
-
+	
 	public override function draw():Void
 	{
+		//trace ("draw");
 		map.draw();
 		_grpEnemies.draw();
 	}
@@ -64,5 +77,16 @@ class Level extends FlxObject
 	    else
 	        e.seesPlayer = false;
 	}	
+	
+	private function checkEnemyTouching (e:Enemy) : Void
+	{
+		FlxG.overlap(e, _player, StartFight);
+		e.alive = false;
+	}
+	
+	public function StartFight(e:Enemy, p:Player) : Void 
+	{
+		_state.StartFight(e);
+	}
 	
 }

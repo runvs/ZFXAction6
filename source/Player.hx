@@ -155,4 +155,11 @@ class Player extends FlxObject
 		}
 	}
 	
+	public function GetFightProperties() : FightProperties
+	{
+		var fp : FightProperties = new FightProperties();	
+		// TODO track changes
+		return fp;
+	}
+	
 }
