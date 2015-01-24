@@ -117,7 +117,7 @@ class Leaf extends flixel.FlxBasic
                 return lRoom;
             else if (lRoom == null)
                 return rRoom;
-            else if (flixel.util.FlxRandom.chanceRoll(0.5))
+            else if (flixel.util.FlxRandom.chanceRoll(0.5)) //this is totally stupid, why do you write blogs 
                 return lRoom;
             else
                 return rRoom;

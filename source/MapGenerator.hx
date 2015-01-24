@@ -1,6 +1,70 @@
 class MapGenerator
 {
 
+	//this function simply generates a list of rooms and connecting floors
+	//you can add this with a list of desired rooms in a funtion im going to write right away
+	public static function generateTree(mapSizeX:Int, mapSizeY:Int):flixel.group.FlxTypedGroup<Leaf>
+	{
+		var tree:flixel.group.FlxTypedGroup<Leaf> = new flixel.group.FlxTypedGroup<Leaf>();
+		var root:Leaf = new Leaf(0, 0, mapSizeX, mapSizeY);
+
+		tree.add(root);
+
+  		var treeSplitted:Bool;
+  		//these parameters will become changeable
+		var splitChance:Float = 0.75;
+		var MAX_LEAF_SIZE:Int = 20;
+
+		do
+		{
+			var currentLeaf:Leaf;
+			treeSplitted = false;
+			for(currentLeaf in tree)
+			{
+		        if (currentLeaf.leftChild == null && currentLeaf.rightChild == null) // if this Leaf is not already split...
+		        {
+		            // if this Leaf is too big, or splitChance percent chance...
+		            if (currentLeaf.width > MAX_LEAF_SIZE || currentLeaf.height > MAX_LEAF_SIZE || flixel.util.FlxRandom.chanceRoll(splitChance))
+		            {
+		                if (currentLeaf.split()) // split the Leaf!
+		                {
+		                    // if we did split, push the child leafs to the Vector so we can loop into them next
+		                    tree.add(currentLeaf.leftChild);
+		                    tree.add(currentLeaf.rightChild);
+		                    treeSplitted = true;
+		                }
+		            }
+		        }				
+			}
+		}
+		while(treeSplitted);		
+
+		return tree;
+	}
+
+	public static function generateRooms(tree:Leaf)
+	{
+		tree.createRooms();
+	}
+
+	    //returns the number of rooms in the tree with this leaf 
+    //as root
+    public static function numberOfRooms(tree:flixel.group.FlxTypedGroup<Leaf>):Int
+    {
+    	var currentLeaf:Leaf;
+		var roomCount:Int = 0;
+
+		for(currentLeaf in tree)
+    	{
+    		if(currentLeaf.room != null)
+    		{
+    			roomCount++;
+    		}
+
+    	}
+    	return roomCount;
+    }
+
 	public static function generate(sizeX:Int, sizeY:Int):flixel.group.FlxGroup
 	{
 		var _mapData:flash.display.BitmapData;		// our map Data - we draw our map here to be turned into a tilemap later
@@ -9,8 +73,6 @@ class MapGenerator
 		_mapData = new flash.display.BitmapData(512, 512, false, 0xff000000);
 		_grpGraphicMap =  new flixel.group.FlxGroup();
 
-		
-	
 		var MAX_LEAF_SIZE:Int = 20;
 		 
 		var _leafs:flixel.group.FlxTypedGroup<Leaf> = new flixel.group.FlxTypedGroup<Leaf>();
