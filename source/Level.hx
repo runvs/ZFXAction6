@@ -4,7 +4,9 @@ import flixel.tile.FlxTile;
 class Level extends FlxObject
 {
 	
-		
+	private var _grpEnemies:flixel.group.FlxTypedGroup<Enemy>;
+	private var _player:Player;
+
 	public var map : flixel.tile.FlxTilemap;
 	
 	public function new(state:PlayState, sizeX:Int, sizeY:Int)
@@ -12,11 +14,9 @@ class Level extends FlxObject
 		super();
 
 		initializeLevel(sizeX, sizeY);
+		_grpEnemies = new flixel.group.FlxTypedGroup<Enemy>();
 	}
 	
-	
-	
-
 	private function initializeLevel(sizeX:Int, sizeY:Int):Void
 	{
 			
@@ -32,15 +32,37 @@ class Level extends FlxObject
 		map.scale.set(1, 1);
 	}
 
-	public override function update():Void
+	public function addPlayer(player:Player):Void
 	{
+		_player = player;
+		_grpEnemies.add(new Enemy());
+		_grpEnemies.members[0].setPosition(_player.x, _player.y);
+	}
+
+	public override function update():Void
+	{	
 		super.update();
 		map.update();
+		_grpEnemies.update();
+		flixel.FlxG.collide(_grpEnemies, map);
+		_grpEnemies.forEachAlive(checkEnemyVision);
 	}
 
 	public override function draw():Void
 	{
 		map.draw();
+		_grpEnemies.draw();
 	}
+
+	private function checkEnemyVision(e:Enemy):Void
+	{
+	    if (map.ray(e.getMidpoint(), _player.getMidpoint()))
+	    {
+	        e.seesPlayer = true;
+	        e.playerPos.copyFrom(_player.getMidpoint());
+	    }
+	    else
+	        e.seesPlayer = false;
+	}	
 	
 }
