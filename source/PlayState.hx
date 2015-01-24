@@ -2,6 +2,7 @@ package;
 
 import flixel.FlxCamera;
 import flixel.FlxG;
+import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.text.FlxText;
@@ -19,7 +20,7 @@ class PlayState extends FlxState
 	
 	private var _player : Player;
 	
-	var map:flixel.tile.FlxTilemap;
+	var map : flixel.tile.FlxTilemap;
 
 	/**
 	 * Function that is called up when to state is created to set it up. 
@@ -29,14 +30,37 @@ class PlayState extends FlxState
 		super.create();
 		//_level = new Level(this, 5, 5);
 		//add(MapGenerator.generate(64, 64));
-		
-		_player = new Player();
+	
 		
 		map = new flixel.tile.FlxTilemap();
 
 		map.loadMap(MapGenerator.generateMapFromTree(MapGenerator.generateTree(32, 32)).toString(), AssetPaths.SpriteSheetA__png, 16, 16);
+		map.setTileProperties(0, FlxObject.ANY);
+		map.setTileProperties(1, FlxObject.NONE);
+		map.setTileProperties(2, FlxObject.NONE);
+		map.setTileProperties(3, FlxObject.NONE);
+		map.setTileProperties(4, FlxObject.NONE);
+		map.setTileProperties(5, FlxObject.NONE);
+		map.scale.set(2, 2);
+		
 		add(map);	
 
+		
+			
+		_player = new Player();
+		
+		for (i in 0 ... map.widthInTiles)
+		{
+			for (j in 0 ... map.heightInTiles)
+			{
+				if ( map.getTile(i, j) != 0)
+				{
+					_player.setPosition(16 * i, 16 * j);
+					break;
+				}
+			}
+		}
+		
 		FlxG.camera.follow(_player, FlxCamera.STYLE_TOPDOWN, new FlxPoint(), 10);
 	}
 	
@@ -59,6 +83,7 @@ class PlayState extends FlxState
 		
 		//_grpGraphicMap.visible = true;
 		_player.update();
+		FlxG.collide(_player, map);
 	}	
 
 	override public function draw():Void

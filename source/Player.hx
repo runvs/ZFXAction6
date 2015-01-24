@@ -14,7 +14,7 @@ import flixel.util.FlxVector;
 class Player extends FlxObject
 {
 
-	private var _sprite : FlxSprite;
+	public var _sprite : FlxSprite;
 	
 	private var _hpFull : FlxSprite;
 	private var _hpEmpty : FlxSprite;
@@ -36,7 +36,13 @@ class Player extends FlxObject
 		_sprite.animation.add("walkright", [0, 1], 5, true);
 		_sprite.animation.add("idle", [0], 5, true);
 		_sprite.animation.play("idle");
-		_sprite.scale.set(0.5, 0.5);
+		_sprite.scale.set(1, 1);
+		_sprite.offset.set();
+		_sprite.origin.set();
+		width = 32;
+		height = 32;
+		
+		
 		
 		_hpEmpty = new FlxSprite();
 		_hpEmpty.loadGraphic(AssetPaths.hp_empty__png, false, 16, 16);
@@ -58,6 +64,8 @@ class Player extends FlxObject
 		_healthOffset.add(new FlxSprite());
 		
 		_totalTime = 0;
+		
+		
 		
 	}
 	
