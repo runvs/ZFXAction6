@@ -310,7 +310,7 @@ class BattleSystem extends FlxObject
 		complete : function (t:FlxTween) : Void 
 		{ 
 			FlxTween.tween(_enemySprite, { x : 500, y: 200 }, 0.5 ); 
-			var hasHit : Int = _playerProperties.DoAttack(_enemyProperties);
+			var hasHit : Int = _enemyProperties.DoAttack(_playerProperties);
 				
 				if (hasHit != 0)
 				{
