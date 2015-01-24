@@ -14,6 +14,8 @@ import flixel.util.FlxVector;
 class Player extends FlxObject
 {
 
+	public var _collectedItems:Array<Item>;
+
 	public var _sprite : FlxSprite;
 	
 	private var _hpFull : FlxSprite;
@@ -42,8 +44,6 @@ class Player extends FlxObject
 		width = 12;
 		height = 12;
 		
-		
-		
 		_hpEmpty = new FlxSprite();
 		_hpEmpty.loadGraphic(AssetPaths.hp_empty__png, false, 16, 16);
 		_hpEmpty.scale.set(4, 4);
@@ -65,8 +65,7 @@ class Player extends FlxObject
 		
 		_totalTime = 0;
 		
-		
-		
+		_collectedItems = new Array<Item>();	
 	}
 	
 	public override function update():Void
@@ -76,6 +75,12 @@ class Player extends FlxObject
 	
 		DoMovement();
 		DoKoetbullaWobble();
+
+		var item:Item;
+		for(item in _collectedItems)
+		{
+			item.apply(this);
+		}
 		
 	}
 	

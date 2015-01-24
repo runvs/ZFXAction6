@@ -20,7 +20,7 @@ class Enemy extends flixel.FlxSprite
 		origin.set(2,2);
 		width = 12;
 		height = 12;
-		
+
 		_brain = new StupidEnemyBrain(idle);
 		_idleTmr = 0;
 		playerPos = flixel.util.FlxPoint.get();	
@@ -39,7 +39,7 @@ class Enemy extends flixel.FlxSprite
 
 	public function idle():Void
 	{
-		trace("idle");
+		//trace("idle");
 	    if (seesPlayer)
 	    {
 	        _brain.activeState = chase;
@@ -66,14 +66,14 @@ class Enemy extends flixel.FlxSprite
 
 	public function chase():Void
 	{
-		trace("chase");
+		//trace("chase");
 	    if (!seesPlayer)
 	    {
 	        _brain.activeState = idle;
 	    }
 	    else
 	    {
-	    	trace(playerPos);
+	    	//trace(playerPos);
 	        flixel.util.FlxVelocity.moveTowardsPoint(this, playerPos, Std.int(speed));
 	    }
 	}	
