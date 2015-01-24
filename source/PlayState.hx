@@ -1,11 +1,14 @@
 package;
 
+import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxMath;
+import flixel.util.FlxPoint;
+import flixel.util.FlxRandom;
 
 /**
  * A FlxState which can be used for the actual gameplay.
@@ -13,15 +16,21 @@ import flixel.util.FlxMath;
 class PlayState extends FlxState
 {
 	private var _level:Level;
+	
+	private var _player : Player;
+	
+
 	/**
 	 * Function that is called up when to state is created to set it up. 
 	 */
 	override public function create():Void
 	{
 		super.create();
-
 		_level = new Level(this, 5, 5);
 		add(MapGenerator.generate(512, 512));
+		_player = new Player();
+		
+		FlxG.camera.follow(_player, FlxCamera.STYLE_TOPDOWN, new FlxPoint(), 10);
 	}
 	
 	/**
@@ -42,11 +51,15 @@ class PlayState extends FlxState
 		//_level.update();
 		
 		//_grpGraphicMap.visible = true;
+		_player.update();
 	}	
 
 	override public function draw():Void
 	{
 		//_level.draw();	
 		super.draw();
+		_player.draw();
+		
+		_player.drawHealth();
 	}
 }

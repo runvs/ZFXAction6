@@ -131,9 +131,10 @@ class MapGenerator
 		var _sprMap:flixel.FlxSprite;
 			// We need to create a sprite to display our Map - it will be scaled up to fill the screen.
 		// our map Sprite will be the size of or finished tileMap/tilesize.
-		_sprMap = new flixel.FlxSprite(flixel.FlxG.width / 2 - flixel.FlxG.width / 32, flixel.FlxG.height / 2 - flixel.FlxG.height / 32).makeGraphic(cast(flixel.FlxG.width / 16, Int), cast(flixel.FlxG.height / 16, Int), 0x0);
-		_sprMap.scale.x = 16;
-		_sprMap.scale.y = 16;	
+		_sprMap = new flixel.FlxSprite();
+		_sprMap.makeGraphic(100, 75, 0x0);
+		_sprMap.scale.x = 8;
+		_sprMap.scale.y = 8;	
 		_grpGraphicMap.add(_sprMap);
 		// make our map Sprite's pixels a copy of our map Data BitmapData. Tell flixel the sprite is 'dirty' (so it flushes the cache for that sprite)
 		_sprMap.pixels = _mapData.clone();
