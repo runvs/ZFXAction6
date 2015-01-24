@@ -1,4 +1,5 @@
 import flixel.FlxObject;
+import flixel.tile.FlxTile;
 
 class Level extends FlxObject
 {

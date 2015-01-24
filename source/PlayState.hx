@@ -32,8 +32,7 @@ class PlayState extends FlxState
 		
 		_levelList = new FlxTypedGroup<Level>();
 		
-		var level : Level = new Level(this, 32, 32);
-		_levelList.add(level);
+		SpawnNextLevel();
 		
 		_currentLevelNumber = 0;
 		
@@ -81,8 +80,23 @@ class PlayState extends FlxState
 	{
 		if (_currentLevelNumber + 1 >= _levelList.length)
 		{
-			
+			SpawnNextLevel();
 		}
+		_currentLevelNumber++;
+	}
+	
+	private function MoveLevelUp() : Void 
+	{
+		if (_currentLevelNumber != 0)
+		{
+			_currentLevelNumber--;
+		}		
+	}
+	
+	function SpawnNextLevel():Void 
+	{
+		var level : Level = new Level(this, 32, 32);
+		_levelList.add(level);
 	}
 
 	override public function draw():Void
