@@ -54,16 +54,16 @@ class MapGenerator
 			mapString.add(Std.string("\n"));
 		}
 
-		trace(mapString);
+		//trace(mapString);
 		return mapString;
 		
 	}
 
 	public static function isInRoom(x:Int, y:Int, room:flixel.util.FlxRect):Bool
 	{
-		if(x > room.x && x < room.x + room.width)
+		if(x > room.x && x <= room.x + room.width)
 		{
-			if(y > room.y && y < room.y + room.height)
+			if(y > room.y && y <= room.y + room.height)
 			{
 				return true;
 			}
@@ -134,7 +134,7 @@ class MapGenerator
     	return roomCount;
     }
 
-    //this is the original api
+    //this is the original api do not use it
 	public static function generate(sizeX:Int, sizeY:Int):flixel.group.FlxGroup
 	{
 		var _mapData:flash.display.BitmapData;		// our map Data - we draw our map here to be turned into a tilemap later

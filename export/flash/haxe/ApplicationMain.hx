@@ -27,14 +27,6 @@ class ApplicationMain {
 		var types = [];
 		
 		
-		urls.push ("assets/data/data-goes-here.txt");
-		types.push (AssetType.TEXT);
-		
-		
-		urls.push ("assets/images/Canteen-Placeholder.png");
-		types.push (AssetType.IMAGE);
-		
-		
 		urls.push ("assets/images/hp_empty.png");
 		types.push (AssetType.IMAGE);
 		
@@ -43,27 +35,11 @@ class ApplicationMain {
 		types.push (AssetType.IMAGE);
 		
 		
-		urls.push ("assets/images/images-go-here.txt");
-		types.push (AssetType.TEXT);
-		
-		
 		urls.push ("assets/images/player.png");
 		types.push (AssetType.IMAGE);
 		
 		
-		urls.push ("assets/images/SpriteSheetA.ase");
-		types.push (AssetType.BINARY);
-		
-		
 		urls.push ("assets/images/SpriteSheetA.png");
-		types.push (AssetType.IMAGE);
-		
-		
-		urls.push ("assets/images/StandardPath-Placeholder.ase");
-		types.push (AssetType.BINARY);
-		
-		
-		urls.push ("assets/images/StandardWall-Placeholder.png");
 		types.push (AssetType.IMAGE);
 		
 		
@@ -71,12 +47,8 @@ class ApplicationMain {
 		types.push (AssetType.IMAGE);
 		
 		
-		urls.push ("assets/music/music-goes-here.txt");
-		types.push (AssetType.TEXT);
-		
-		
-		urls.push ("assets/sounds/sounds-go-here.txt");
-		types.push (AssetType.TEXT);
+		urls.push ("assets/music/IkeaKnight_OST.mp3");
+		types.push (AssetType.MUSIC);
 		
 		
 		urls.push ("assets/sounds/beep.mp3");
