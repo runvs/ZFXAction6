@@ -91,8 +91,7 @@ class PlayState extends FlxState
 				var t : FlxTimer = new FlxTimer(1.0, function (t:FlxTimer) : Void { MoveLevelDown();  } );
 				//MoveLevelDown();
 				_inLevelChange = true;
-			}
-			
+			}			
 		}
 	}	
 	
