@@ -1,0 +1,5 @@
+enum Items
+{
+	BollyOfDoom;
+	Lack;
+}
