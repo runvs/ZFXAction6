@@ -88,6 +88,7 @@ class Player extends FlxObject
 		DoMovement();
 		DoKoetbullaWobble();
 		
+		trace (_kbtsum + " " + _hpCurrent);
 		_kbtsum += FlxG.elapsed;
 		if (_kbtsum >= GameProperties.PlayerReduceKoetbullaTime)
 		{
@@ -181,11 +182,13 @@ class Player extends FlxObject
 	
 	public function ReduceHP() : Void 
 	{
+		trace ("reduce");
 		_hpCurrent -= 1;
 	}
 	
 	public function RefillHP () : Void 
 	{
+		trace ("refill");
 		_hpCurrent = _hpMax;
 	}
 	

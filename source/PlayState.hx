@@ -140,7 +140,7 @@ class PlayState extends FlxState
 	{
 		for(i in 0...count)
 		{
-			var level : Level = new Level(this, _player, 32, 32);
+			var level : Level = new Level(this, _player, 32, 32, i);
 			_levelList.push(level);			
 		}
 		_currentLevelNumber = 0;
@@ -215,7 +215,7 @@ class PlayState extends FlxState
 	
 	public function StartFight (e:Enemy, p:Player) : Void 
 	{
-		trace ("startfight");
+		//trace ("startfight");
 		_battleSystem.StartBattle(e, p, _itemGenerator);
 	}
 	

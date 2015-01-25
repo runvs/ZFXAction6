@@ -9,10 +9,12 @@ class Level extends FlxObject
 
 	public var map : flixel.tile.FlxTilemap;
 	public var _state:PlayState;
+	private var _level : Int;
 
-	public function new(state:PlayState, player:Player, sizeX:Int, sizeY:Int)
+	public function new(state:PlayState, player:Player, sizeX:Int, sizeY:Int, level:Int)
 	{
 		super();
+		_level = level;
 		_state = state;
 		_player = player;
 		initializeLevel(sizeX, sizeY);
@@ -32,7 +34,7 @@ class Level extends FlxObject
 		map.setTileProperties(5, FlxObject.NONE);
 		map.scale.set(1, 1);
 
-		_grpEnemies = MobGenerator.generateMobsFromTree(mapAsTree, 50);
+		_grpEnemies = MobGenerator.generateMobsFromTree(mapAsTree, 50, _level);
 
 		var forbiddenList:Array<Int> = new Array<Int>();
 		forbiddenList.push(0);

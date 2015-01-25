@@ -233,7 +233,7 @@ class BattleSystem extends FlxObject
 		_enemy.alive = false;
 
 		var item:Item = _itemGenerator.generateDrop(0);
-		trace(item);
+		//trace(item);
 
 		
 		_player._collectedItems.push(item);
