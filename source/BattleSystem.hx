@@ -156,19 +156,19 @@ class BattleSystem extends FlxObject
 		_evadeSound = new FlxSound();
 		
 		#if flash
-        _hit1Sound = FlxG.sound.load(AssetPaths.hit__mp3, 0.25, false, false , false );
-		_hit2Sound = FlxG.sound.load(AssetPaths.hit2__mp3, 0.25, false, false , false );
-		_pickUpSound = FlxG.sound.load(AssetPaths.pickup__mp3, 0.25, false, false , false );
-		_fleeFailSound = FlxG.sound.load(AssetPaths.fleefail__mp3, 0.25, false, false , false );
-		_fleeSuccessSound = FlxG.sound.load(AssetPaths.fleesuccess__mp3, 0.25, false, false , false );
-		_evadeSound = FlxG.sound.load(AssetPaths.evade__mp3, 0.25, false, false , false );
+        _hit1Sound = FlxG.sound.load(AssetPaths.hit__mp3, 0.75, false, false , false );
+		_hit2Sound = FlxG.sound.load(AssetPaths.hit2__mp3, 0.75, false, false , false );
+		_pickUpSound = FlxG.sound.load(AssetPaths.pickup__mp3, 0.75, false, false , false );
+		_fleeFailSound = FlxG.sound.load(AssetPaths.fleefail__mp3, 0.75, false, false , false );
+		_fleeSuccessSound = FlxG.sound.load(AssetPaths.fleesuccess__mp3, 0.75, false, false , false );
+		_evadeSound = FlxG.sound.load(AssetPaths.evade__mp3, 0.75, false, false , false );
         #else
-        _hit1Sound = FlxG.sound.load(AssetPaths.hit__ogg, 0.25 , false, false , false);
-		_hit2Sound = FlxG.sound.load(AssetPaths.hit2__ogg, 0.25, false, false , false );
-		_pickUpSound = FlxG.sound.load(AssetPaths.pickup__ogg, 0.25, false, false , false );
-		_fleeFailSound = FlxG.sound.load(AssetPaths.fleefail__ogg, 0.25, false, false , false );
-		_fleeSuccessSound = FlxG.sound.load(AssetPaths.fleesuccess__ogg, 0.25, false, false , false );
-		_evadeSound = FlxG.sound.load(AssetPaths.evade__ogg, 0.25, false, false , false );
+        _hit1Sound = FlxG.sound.load(AssetPaths.hit__ogg, 0.75 , false, false , false);
+		_hit2Sound = FlxG.sound.load(AssetPaths.hit2__ogg, 0.75, false, false , false );
+		_pickUpSound = FlxG.sound.load(AssetPaths.pickup__ogg, 0.75, false, false , false );
+		_fleeFailSound = FlxG.sound.load(AssetPaths.fleefail__ogg, 0.75, false, false , false );
+		_fleeSuccessSound = FlxG.sound.load(AssetPaths.fleesuccess__ogg, 0.75, false, false , false );
+		_evadeSound = FlxG.sound.load(AssetPaths.evade__ogg, 0.75, false, false , false );
         #end
 	}
 	
@@ -338,12 +338,10 @@ class BattleSystem extends FlxObject
 	
 	private function PlayerSpecial() : Void 
 	{
-		if (_awaitInput)
+			if (_awaitInput)
 		{
-			if (_playerProperties.SpecialAttackCollected >= _playerProperties.SpecialAttackNeeded)
-			{
-				
-				FlxTween.tween(_playerSprite, { x : _enemySprite.x, y:_enemySprite.y }, 0.75, { ease : FlxEase.bounceOut, 
+			BlockGUI();
+			FlxTween.tween(_playerSprite, { x : _enemySprite.x, y:_enemySprite.y }, 0.75, { ease : FlxEase.bounceOut, 
 			complete : function (t:FlxTween) : Void 
 			{ 
 				FlxTween.tween(_playerSprite, { x : 200, y: 300 }, 0.5 ); 
@@ -369,13 +367,6 @@ class BattleSystem extends FlxObject
 					DoEnemyAction();
 				}
 			});
-				
-				
-				
-				BlockGUI();
-				DoEnemyAction();
-			}
-			
 		}
 	}
 		
@@ -396,7 +387,7 @@ class BattleSystem extends FlxObject
 				{
 					
 					ShowInfoString("Flee", true);
-					var t: FlxTimer = new FlxTimer(0.5, function(t:FlxTimer) : Void { active = false; _fleeSuccessSound.play(); } );
+					var t: FlxTimer = new FlxTimer(0.5, function(t:FlxTimer) : Void { active = false; _enemy.alive = false; _fleeSuccessSound.play(); } );
 					
 				}
 				else
