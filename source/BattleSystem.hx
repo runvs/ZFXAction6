@@ -223,6 +223,7 @@ class BattleSystem extends FlxObject
 		// you loose
 		active = false;
 		_lostBattle = true;
+		_enemy.alive = false;
 	}
 	
 	private function WinBattle () : Void 
