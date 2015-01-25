@@ -78,7 +78,6 @@ class MapGenerator
 
 		//trace(mapString);
 		return mapString;
-		
 	}
 
 	public static function isInHall(x:Int, y:Int, room:flixel.util.FlxRect):Bool

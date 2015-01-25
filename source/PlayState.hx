@@ -150,8 +150,6 @@ class PlayState extends FlxState
 					&& _levelList[_currentLevelNumber].map.getTile(i, j) != 2)
 				{
 					_player.setPosition(16 * i, 16 * j);
-					_levelList[0]._grpEnemies.add(new Enemy());
-					_levelList[0]._grpEnemies.members[0].setPosition(16 * i, 16 * j);
 					return;
 				}
 			}
