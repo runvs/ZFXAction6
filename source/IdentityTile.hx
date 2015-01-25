@@ -13,6 +13,6 @@ class IdentiyTile extends Tile
 	public override function draw()
 	{
 		_sprite.draw();
-		trace("IdentiyTile::draw()");
+		//trace("IdentiyTile::draw()");
 	}
 }

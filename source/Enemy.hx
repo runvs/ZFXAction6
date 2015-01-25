@@ -38,7 +38,7 @@ class Enemy extends flixel.FlxSprite
 	{
 		_fightingProperties.HealthCurrent = _fightingProperties.HealthMax = 4 + 1 * level;
 		_fightingProperties.AttackDamage = 1 + Math.floor(1 * level);
-		_fightingProperties.EvadeChance = 0.0125 + 0.0025 * level ;
+		_fightingProperties.EvadeChance = 0.0125;
 	}
 	
 	public override function update():Void
@@ -76,6 +76,6 @@ class Enemy extends flixel.FlxSprite
 
 	public function chase():Void
 	{
-		trace("chase");
+		//trace("chase");
 	}	
 }

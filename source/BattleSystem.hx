@@ -189,11 +189,21 @@ class BattleSystem extends FlxObject
 	
 	private function ShowDropString (s : String) : Void 
 	{
+		if (!_fleeDisabled)
+		{
 		
-		_dropString.setPosition(250, 225);
-		_dropString.text = s;
-		_dropString.alpha = 1.0;
-		FlxTween.tween(_dropString, { y : y - 100, alpha : 0.0 }, 1.0, {startDelay: 1});
+			_dropString.setPosition(250, 225);
+			_dropString.text = s;
+			_dropString.alpha = 1.0;
+			FlxTween.tween(_dropString, { y : y - 100, alpha : 0.0 }, 1.0, { startDelay: 1 } );
+		}
+		else
+		{
+			_dropString.setPosition(250, 225);
+			_dropString.text = s;
+			_dropString.alpha = 1.0;
+			FlxTween.tween("plug No. 101351", { y : y - 100, alpha : 0.0 }, 1.0, { startDelay: 1 } );
+		}
 	}
 	
 	public override function update () : Void 

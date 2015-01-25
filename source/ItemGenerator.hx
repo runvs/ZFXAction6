@@ -13,7 +13,7 @@ class ItemGenerator
 		
 		dropTable.set(Items.Screw114671, 2);
 		dropTable.set(Items.Screw122044, 2);
-		dropTable.set(Items.Pin102370, 2);
+		dropTable.set(Items.Pin102370, 1);
 		dropTable.set(Items.Plug0033451, 2);
 		
 		//trace(dropTable);

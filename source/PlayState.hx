@@ -41,6 +41,7 @@ class PlayState extends FlxState
 	private var _tutorialText4 : FlxText;	// koetbulla
 	private var _tutorialText5 : FlxText;	// cantine
 	private var _tutorialText6 : FlxText;	// you need to ascend nightly ikea
+	private var _tutorialText7 : FlxText;	// you need to ascend nightly ikea
 	private var _drawTutoral : Bool ;
 	
 	 /* Function that is called up when to state is created to set it up. 
@@ -129,9 +130,14 @@ class PlayState extends FlxState
 			FlxTween.tween(_tutorialText6,  { alpha : 0.0 }, 1, { startDelay : 1.5 } );
 		} , startDelay : 17.5 } );
 		
-		_player.GetFightProperties().AttackDamage += 10000;
-		_currentLevelNumber = 19;
-		MoveLevelDown();	
+		_tutorialText7 = new  FlxText(300, 200, 350, "You can find items for crafting. The blueprints are on the right!", 32);
+		_tutorialText7.alpha = 0;
+		_tutorialText7.scrollFactor.set();
+		FlxTween.tween(_tutorialText7,  { alpha : 1.0 }, 1, { complete : function(t: FlxTween) 
+		{
+			FlxTween.tween(_tutorialText7,  { alpha : 0.0 }, 1, { startDelay : 1.5 } );
+		} , startDelay : 21.0 } );
+		
 	}
 	
 	/**
@@ -166,10 +172,11 @@ class PlayState extends FlxState
 		_tutorialText4.update();
 		_tutorialText5.update();
 		_tutorialText6.update();
+		_tutorialText7.update();
 		
 		if (!_battleSystem.active)
 		{
-			trace(_currentLevelNumber);
+			//trace(_currentLevelNumber);
 			if(_currentLevelNumber == _maxLevels-1)
 			{
 				EndGame();
@@ -192,6 +199,10 @@ class PlayState extends FlxState
 			CheckSpecialTiles();
 			
 			_inventory.UnBlock();
+		
+			if (_player._hpCurrent < 0)
+				EndGame();
+			
 		}
 		else
 		{
@@ -251,8 +262,8 @@ class PlayState extends FlxState
 		{
 			for (j in 0 ... _levelList[_currentLevelNumber].map.heightInTiles)
 			{
-				if ( _levelList[_currentLevelNumber].map.getTile(i, j) != 0 && _levelList[_currentLevelNumber].map.getTile(i, j) != 1
-					&& _levelList[_currentLevelNumber].map.getTile(i, j) != 2)
+				if ( _levelList[_currentLevelNumber].map.getTile(i, j) != 0 && _levelList[_currentLevelNumber].map.getTile(i, j) != 6
+					&& _levelList[_currentLevelNumber].map.getTile(i, j) != 7)
 				{
 					_player.setPosition(16 * i, 16 * j);
 					return;
@@ -319,12 +330,13 @@ class PlayState extends FlxState
 			_tutorialText4.draw();
 			_tutorialText5.draw();
 			_tutorialText6.draw();
+			_tutorialText7.draw();
 		}
 	}
 	
 	public function StartFight (e:Enemy, p:Player) : Void 
 	{
-		trace ("startfight");
+		//trace ("startfight");
 		_battleSystem.StartBattle(e, p, _itemGenerator);
 	}
 	
