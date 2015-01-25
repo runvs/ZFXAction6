@@ -1,10 +1,16 @@
 class BluePrint 
 {
 	public var requiredItems:Map<String, Int>;
+	
+	private var _crafted : Bool;
+	private var _name : String;
+	
 
 	public function new()
 	{
 		requiredItems = new Map<String, Int>();
+		_crafted = false;
+		_name = "";
 	}
 	
 	public var _infoString : String;
@@ -129,9 +135,11 @@ class BluePrint
 	}
 
 	//im only setting the used items to consumed so you dont have to
-	public function craft(ownedItems:Array<Item>):Void
+	public function craft(ownedItems:Array<Item>, player:Player):Void
 	{
+		
 		var item:Item;
+		_crafted = true;
 		for(item in ownedItems)
 		{
 			var key:String = item.getName();
@@ -146,5 +154,8 @@ class BluePrint
 				}
 			}
 		}
+		
+		player.AddBlueprintItem(_name);
+		
 	}
 }

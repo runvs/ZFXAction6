@@ -35,6 +35,8 @@ class Player extends FlxObject
 	
 	private var _kbtsum : Float;
 	
+	private var _hasPreiselbeeren : Bool;
+	
 	public function new() 
 	{
 		super();
@@ -77,7 +79,9 @@ class Player extends FlxObject
 		
 		_kbtsum = 0;
 
-		_fightingProperties.AttackDamage = 10;
+		_fightingProperties.AttackDamage = 2;
+		
+		_hasPreiselbeeren = false;
 	}
 
 	public override function update():Void
@@ -89,7 +93,7 @@ class Player extends FlxObject
 		DoKoetbullaWobble();
 		
 		trace (_kbtsum + " " + _hpCurrent);
-		_kbtsum += FlxG.elapsed;
+		_kbtsum += FlxG.elapsed * ((_hasPreiselbeeren) ? 0.5 : 1);
 		if (_kbtsum >= GameProperties.PlayerReduceKoetbullaTime)
 		{
 			_kbtsum = 0;
@@ -190,6 +194,22 @@ class Player extends FlxObject
 	{
 		trace ("refill");
 		_hpCurrent = _hpMax;
+	}
+	
+	public function AddBlueprintItem(name:String)
+	{
+		if (name == "CaddyLack")
+		{
+			_fightingProperties.EvadeChance += 0.025;
+		}
+		else if (name == "Hektar")
+		{
+			_fightingProperties.AttackDamage += 4;
+		}
+		else if (name == "Preiselbeersauce")
+		{
+			_hasPreiselbeeren = true;
+		}
 	}
 	
 }
