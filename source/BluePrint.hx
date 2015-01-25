@@ -24,6 +24,11 @@ class BluePrint
 	public static function convertArrayToMap (owned: Array<Item>): Map<String, Int>
 	{
 		var map :  Map<String, Int> = new  Map<String, Int>();
+		for (i in 0 ... owned.length)
+		{
+			trace (owned[i].getName() + Std.string(map.get(owned[i].getName())));
+			map.set(owned[i].getName(), map.get(owned[i].getName()) + 1);
+		}
 		
 		return map;
 	}

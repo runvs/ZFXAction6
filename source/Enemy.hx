@@ -37,7 +37,7 @@ class Enemy extends flixel.FlxSprite
 
 	public function idle():Void
 	{
-		trace("idle");
+		//trace("idle");
 	    // if (seesPlayer)
 	    // {
 	    //     _brain.activeState = chase;
