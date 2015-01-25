@@ -32,6 +32,8 @@ class PlayState extends FlxState
 	private var _battleSystem : BattleSystem;
 	public var _itemGenerator:ItemGenerator;
 	
+	private var _inventory : Inventory;
+	
 	 /* Function that is called up when to state is created to set it up. 
 	 */
 	override public function create():Void
@@ -50,14 +52,15 @@ class PlayState extends FlxState
 		
 		_inLevelChange = false;
 		
-		
-		//SpawnNextLevel();
 		spawnLevels(20);
 		PlacePlayer();
-
+		_inventory = new Inventory(_player);
+		
 		//lets go, tween in
 		FlxG.camera.follow(_player, FlxCamera.STYLE_TOPDOWN, new FlxPoint(), 10);
 		FlxTween.tween(_overlay, { alpha:0.0 }, 1.0);
+		
+		
 	}
 	
 	/**
@@ -79,6 +82,8 @@ class PlayState extends FlxState
 			// you lost a battle
 			EndGame();
 		}
+		
+		_inventory.update();
 	
 		if (!_battleSystem.active)
 		{
@@ -200,6 +205,7 @@ class PlayState extends FlxState
 		_player.draw();
 		_player.drawHealth();
 		_battleSystem.draw();
+		_inventory.draw();
 		_overlay.draw();
 	}
 	

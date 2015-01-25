@@ -1,10 +1,47 @@
 class BluePrint 
 {
-	private var requiredItems:Map<String, Int>;
+	public var requiredItems:Map<String, Int>;
 
 	public function new()
 	{
 		requiredItems = new Map<String, Int>();
+	}
+	
+	public function getNumberOfTotalItems () : Int
+	{
+		var i : Int = 0;
+		var iterator:Iterator<String> = requiredItems.keys();
+		while(iterator.hasNext())
+		{
+			var key:String = iterator.next();
+			i += requiredItems.get(key);
+		}
+		return i;
+	}
+	
+	public static function convertArrayToMap (owned: Array<Item>): Map<String, Int>
+	{
+		var map :  Map<String, Int> = new  Map<String, Int>();
+		
+		return map;
+	}
+	
+	public function getNumberOfCollectedItems (owned:Map<String, Int>) : Int
+	{
+		var i : Int = 0;
+		var iterator:Iterator<String> = requiredItems.keys();
+		while(iterator.hasNext())
+		{
+			var key:String = iterator.next();
+			
+			//we have the item
+			if(owned.get(key) != null)
+			{
+				i += ((owned.get(key) >= requiredItems.get(key)) ? requiredItems.get(key) : (owned.get(key) ) );
+			}
+		}
+
+		return i;
 	}
 
 	public function isCraftable(ownedItems:Array<Item>):Bool

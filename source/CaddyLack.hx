@@ -4,6 +4,6 @@ class CaddyLack extends BluePrint
 	{
 		super();
 		requiredItems.set("Lack", 1);
-		requiredItems.set("Item", 10);
+		requiredItems.set("Item", 5);
 	}
 }
