@@ -16,4 +16,9 @@ class Item
 	{
 		return "Item";
 	}
+	
+	public function getInfo() : String 
+	{
+		return "";
+	}
 }

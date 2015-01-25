@@ -20,4 +20,9 @@ class Lack extends Item
 	{
 		return "Lack";
 	}
+	
+	public override function getInfo():String
+	{
+		return "Attack +1";
+	}
 }

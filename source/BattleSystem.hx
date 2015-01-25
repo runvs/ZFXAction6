@@ -193,7 +193,7 @@ class BattleSystem extends FlxObject
 		_dropString.setPosition(250, 225);
 		_dropString.text = s;
 		_dropString.alpha = 1.0;
-		FlxTween.tween(_dropString, { y : y - 100, alpha : 0.0 }, 1.0);
+		FlxTween.tween(_dropString, { y : y - 100, alpha : 0.0 }, 1.0, {startDelay: 1});
 	}
 	
 	public override function update () : Void 
@@ -238,8 +238,8 @@ class BattleSystem extends FlxObject
 		
 		_player._collectedItems.push(item);
 		
-		ShowDropString("Dropped " + item.getName());
-		var t:FlxTimer = new FlxTimer(1.0, function (t:FlxTimer) : Void  { active = false; } );
+		ShowDropString("Dropped " + item.getName() + "\n" + item.getInfo());
+		var t:FlxTimer = new FlxTimer(2.0, function (t:FlxTimer) : Void  { active = false; } );
 		
 	}
 	
