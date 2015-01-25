@@ -31,6 +31,8 @@ class Inventory extends FlxObject
 	
 	private var _infoText : FlxText;
 	private var _infoBackground : FlxSprite;
+	
+	public var _blockedInput : Bool;
 
 	public function new(player : Player) 
 	{
@@ -90,54 +92,70 @@ class Inventory extends FlxObject
 		_infoBackground.origin.set();
 		_infoBackground.setPosition(250, 200);
 		_infoBackground.alpha = 0.0;
+		
+		_blockedInput = false;
+	}
+	
+	public function Block () : Void 
+	{
+		_blockedInput = true;
+	}
+	public function UnBlock () : Void 
+	{
+		_blockedInput = false;
 	}
 	
 	public override function update () : Void
 	{
-		MouseClick();
+	
+		
 		UpdateText();
 		
-		if (FlxG.keys.justPressed.C)
+		if (!_blockedInput)
 		{
-			_infoText.text = "CaddyLack\n" + _blueprint1.getInfoString(BluePrint.convertArrayToMap(_player._collectedItems));
-			_infoText.alpha = 1.0;
-			FlxTween.tween(_infoText, { alpha : 0.0 }, 0.5, { startDelay:2 } );
-			_infoBackground.alpha = 1.0;
-			FlxTween.tween(_infoBackground, { alpha : 0.0 }, 0.5, { startDelay:2 } );
-			if (_blueprint1.isCraftable(_player._collectedItems))
+			
+			if (FlxG.keys.justPressed.C)
 			{
-				_blueprint1.craft(_player._collectedItems);
+				_infoText.text = "CaddyLack\n" + _blueprint1.getInfoString(BluePrint.convertArrayToMap(_player._collectedItems));
+				_infoText.alpha = 1.0;
+				FlxTween.tween(_infoText, { alpha : 0.0 }, 0.5, { startDelay:2 } );
+				_infoBackground.alpha = 1.0;
+				FlxTween.tween(_infoBackground, { alpha : 0.0 }, 0.5, { startDelay:2 } );
+				if (_blueprint1.isCraftable(_player._collectedItems))
+				{
+					_blueprint1.craft(_player._collectedItems);
+				}
+				
+				
+				
+			}
+			if (FlxG.keys.justPressed.H)
+			{
+				_infoText.text = "Hektar\n"  + _blueprint2.getInfoString(BluePrint.convertArrayToMap(_player._collectedItems));
+				_infoText.alpha = 1.0;
+				FlxTween.tween(_infoText, { alpha : 0.0 }, 0.5, { startDelay:2 } );
+				_infoBackground.alpha = 1.0;
+				FlxTween.tween(_infoBackground, { alpha : 0.0 }, 0.5, { startDelay:2 } );
+				if (_blueprint2.isCraftable(_player._collectedItems))
+				{
+					_blueprint2.craft(_player._collectedItems);
+				}
+			}
+			if (FlxG.keys.justPressed.P)
+			{
+				_infoText.text = "Preiselbeersauce\n"  + _blueprint3.getInfoString(BluePrint.convertArrayToMap(_player._collectedItems));
+				_infoText.alpha = 1.0;
+				FlxTween.tween(_infoText, { alpha : 0.0 }, 0.5, { startDelay:2 } );
+				_infoBackground.alpha = 1.0;
+				FlxTween.tween(_infoBackground, { alpha : 0.0 }, 0.5, { startDelay:2 } );
+				if (_blueprint3.isCraftable(_player._collectedItems))
+				{
+					_blueprint3.craft(_player._collectedItems);
+				}
+				
 			}
 			
-			
-			
 		}
-		if (FlxG.keys.justPressed.H)
-		{
-			_infoText.text = "Hektar\n"  + _blueprint2.getInfoString(BluePrint.convertArrayToMap(_player._collectedItems));
-			_infoText.alpha = 1.0;
-			FlxTween.tween(_infoText, { alpha : 0.0 }, 0.5, { startDelay:2 } );
-			_infoBackground.alpha = 1.0;
-			FlxTween.tween(_infoBackground, { alpha : 0.0 }, 0.5, { startDelay:2 } );
-			if (_blueprint2.isCraftable(_player._collectedItems))
-			{
-				_blueprint2.craft(_player._collectedItems);
-			}
-		}
-		if (FlxG.keys.justPressed.P)
-		{
-			_infoText.text = "Preiselbeersauce\n"  + _blueprint3.getInfoString(BluePrint.convertArrayToMap(_player._collectedItems));
-			_infoText.alpha = 1.0;
-			FlxTween.tween(_infoText, { alpha : 0.0 }, 0.5, { startDelay:2 } );
-			_infoBackground.alpha = 1.0;
-			FlxTween.tween(_infoBackground, { alpha : 0.0 }, 0.5, { startDelay:2 } );
-			if (_blueprint3.isCraftable(_player._collectedItems))
-			{
-				_blueprint3.craft(_player._collectedItems);
-			}
-			
-		}
-		
 		
 		_background.update();
 		_item1.update();
@@ -146,38 +164,8 @@ class Inventory extends FlxObject
 		
 	}
 	
-	private function Upgrade1 () : Void 
-	{
-		
-	}
 	
-	private function Upgrade2 () : Void 
-	{
-		
-	}
-	private function Upgrade3 () : Void 
-	{
-		
-	}
 	
-	function MouseClick():Void 
-	{
-		if (FlxG.mouse.justPressed)
-		{
-			if (_item1.overlapsPoint(FlxG.mouse))
-			{
-				Upgrade1();
-			}
-			else if (_item1.overlapsPoint(FlxG.mouse))
-			{
-				Upgrade2();
-			}
-			else if (_item1.overlapsPoint(FlxG.mouse))
-			{
-				Upgrade3();
-			}		
-		}
-	}
 	
 	function UpdateText():Void 
 	{

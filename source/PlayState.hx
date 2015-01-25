@@ -82,9 +82,10 @@ class PlayState extends FlxState
 			// you lost a battle
 			EndGame();
 		}
-		
 		_inventory.update();
-	
+		
+		
+		
 		if (!_battleSystem.active)
 		{
 			super.update();
@@ -102,11 +103,15 @@ class PlayState extends FlxState
 			FlxG.collide(_player, _levelList[_currentLevelNumber].map);
 
 			CheckSpecialTiles();
+			
+			_inventory.UnBlock();
 		}
 		else
 		{
 			_battleSystem.update();
+			_inventory.Block();
 		}	
+		//trace (_inventory._blockedInput);
 	}	
 	
 	private function MoveLevelDown() : Void 

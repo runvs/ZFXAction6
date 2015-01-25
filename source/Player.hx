@@ -31,7 +31,7 @@ class Player extends FlxObject
 	
 	private var _timer : FlxTimer;
 
-	private var _fightingProperties:FightProperties;
+	public var _fightingProperties:FightProperties;
 	
 	public function new() 
 	{
