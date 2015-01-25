@@ -30,6 +30,7 @@ class Inventory extends FlxObject
 	private var _blueprint3 : BluePrint;
 	
 	private var _infoText : FlxText;
+	private var _infoBackground : FlxSprite;
 
 	public function new(player : Player) 
 	{
@@ -37,7 +38,7 @@ class Inventory extends FlxObject
 		_player = player;
 		
 		_background = new FlxSprite();
-		_background.makeGraphic(100, 400, FlxColorUtil.makeFromARGB(1.0, 118, 66, 138));
+		_background.makeGraphic(100, 400, FlxColorUtil.makeFromARGB(1.0,  0,0,0));
 		_background.origin.set();
 		_background.setPosition(700, 100);
 		_background.scrollFactor.set();
@@ -79,9 +80,16 @@ class Inventory extends FlxObject
 		_blueprint2 = new Hektar();		// attack
 		_blueprint3 = new Preiselbeersauce();	// koetbulla
 		
-		_infoText = new FlxText(300, 200, 200, "", 10);
+		_infoText = new FlxText(250, 200, 250, "", 16);
 		_infoText.alpha = 0.0;
+		_infoText.scrollFactor.set();
 		
+		_infoBackground = new FlxSprite();
+		_infoBackground.makeGraphic(250, 200, FlxColorUtil.makeFromARGB(1.0, 0,0,0));
+		_infoBackground.scrollFactor.set();
+		_infoBackground.origin.set();
+		_infoBackground.setPosition(250, 200);
+		_infoBackground.alpha = 0.0;
 	}
 	
 	public override function update () : Void
@@ -91,23 +99,40 @@ class Inventory extends FlxObject
 		
 		if (FlxG.keys.justPressed.C)
 		{
-			_infoText.text = "CaddyLack\n";
+			_infoText.text = "CaddyLack\n" + _blueprint1.getInfoString(BluePrint.convertArrayToMap(_player._collectedItems));
 			_infoText.alpha = 1.0;
 			FlxTween.tween(_infoText, { alpha : 0.0 }, 1.5, { startDelay:1 } );
+			_infoBackground.alpha = 1.0;
+			FlxTween.tween(_infoBackground, { alpha : 0.0 }, 1.5, { startDelay:1 } );
+			if (_blueprint1.isCraftable(_player._collectedItems))
+			{
+				_blueprint1.craft(_player._collectedItems);
+			}
 			
 		}
 		if (FlxG.keys.justPressed.H)
 		{
-			_infoText.text = "Hektar\n";
+			_infoText.text = "Hektar\n"  + _blueprint2.getInfoString(BluePrint.convertArrayToMap(_player._collectedItems));
 			_infoText.alpha = 1.0;
 			FlxTween.tween(_infoText, { alpha : 0.0 }, 1.5, { startDelay:1 } );
-			
+			_infoBackground.alpha = 1.0;
+			FlxTween.tween(_infoBackground, { alpha : 0.0 }, 1.5, { startDelay:1 } );
+			if (_blueprint2.isCraftable(_player._collectedItems))
+			{
+				_blueprint2.craft(_player._collectedItems);
+			}
 		}
 		if (FlxG.keys.justPressed.P)
 		{
-			_infoText.text = "Preiselbeersauce\n";
+			_infoText.text = "Preiselbeersauce\n"  + _blueprint3.getInfoString(BluePrint.convertArrayToMap(_player._collectedItems));
 			_infoText.alpha = 1.0;
 			FlxTween.tween(_infoText, { alpha : 0.0 }, 1.5, { startDelay:1 } );
+			_infoBackground.alpha = 1.0;
+			FlxTween.tween(_infoBackground, { alpha : 0.0 }, 1.5, { startDelay:1 } );
+			if (_blueprint3.isCraftable(_player._collectedItems))
+			{
+				_blueprint3.craft(_player._collectedItems);
+			}
 			
 		}
 		
@@ -176,6 +201,7 @@ class Inventory extends FlxObject
 		_text2.draw();
 		_text3.draw();
 	
+		_infoBackground.draw();
 		_infoText.draw();
 	}
 	

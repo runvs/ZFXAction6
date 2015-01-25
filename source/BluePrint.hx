@@ -7,6 +7,8 @@ class BluePrint
 		requiredItems = new Map<String, Int>();
 	}
 	
+	public var _infoString : String;
+	
 	public function getNumberOfTotalItems () : Int
 	{
 		var i : Int = 0;
@@ -44,6 +46,35 @@ class BluePrint
 		return i;
 	}
 
+	public function getInfoString (owned : Map<String, Int>) : String
+	{
+		var s : String;
+		var items : String = "";
+		
+		var iterator:Iterator<String> = requiredItems.keys();
+		while(iterator.hasNext())
+		{
+			var key:String = iterator.next();
+			var onelineString : String  = key + " (";
+			
+			//we have the item
+			if(owned.get(key) != null)
+			{
+				
+			}
+			else 
+			{
+				onelineString += " 0";
+			}
+			onelineString += " / " + Std.string(requiredItems.get(key)) + ")\n";
+			items += onelineString;
+		}
+		
+		s = _infoString + "\n" +  items;
+		
+		return s;
+	}
+	
 	public function isCraftable(ownedItems:Array<Item>):Bool
 	{
 		var isCraftable:Bool = false;
@@ -62,7 +93,6 @@ class BluePrint
 				ownedByCount.set(itemName, ownedByCount.get(itemName) + 1);
 			}
 		}
-
 		return compareWithRequiredItems(requiredItems, ownedByCount);
 	}
 
