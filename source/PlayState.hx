@@ -171,13 +171,13 @@ class PlayState extends FlxState
 			var py : Int = cast _player.y / 16;
 			
 			
-			if (_levelList[_currentLevelNumber].map.getTile(px, py) == 1)
+			if (_levelList[_currentLevelNumber].map.getTile(px, py) == 7)
 			{
 				FlxTween.tween(_overlay, { alpha:1.0 }, 1.0);
 				var t : FlxTimer = new FlxTimer(1.0, function (t:FlxTimer) : Void { MoveLevelDown();  } );
 				_inLevelChange = true;
 			}			
-			if (_levelList[_currentLevelNumber].map.getTile(px, py) == 2)
+			if (_levelList[_currentLevelNumber].map.getTile(px, py) == 6)
 			{
 				if (_currentLevelNumber != 0)
 				{
@@ -190,7 +190,7 @@ class PlayState extends FlxState
 					//FlxG.switchState(new CutSceneNoEscape(this));
 				}
 			}		
-			if (_levelList[_currentLevelNumber].map.getTile(px, py) == 3)
+			if (_levelList[_currentLevelNumber].map.getTile(px, py) == 2)
 			{
 				_player.RefillHP();
 			}			
