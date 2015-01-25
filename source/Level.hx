@@ -36,8 +36,17 @@ class Level extends FlxObject
 	{	
 		super.update();
 		map.update();
+<<<<<<< HEAD
 		flixel.FlxG.collide(_grpEnemies, map);
 		_grpEnemies.update();
+=======
+		_grpEnemies.update();
+		if (flixel.FlxG.collide(map, _grpEnemies))
+		{
+			trace ("collide");
+		}
+		
+>>>>>>> 8896358b0d7b6a97d758d4f3a04897374666b09e
 		_grpEnemies.forEachAlive(checkEnemyVision);
 	}
 

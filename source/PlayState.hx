@@ -39,7 +39,7 @@ class PlayState extends FlxState
 		super.create();
 		
 		_levelList = new FlxTypedGroup<Level>();
-		_player = new Player();
+		_player = new Player(this);
 		SpawnNextLevel();
 		
 		_currentLevelNumber = 0;
@@ -84,8 +84,7 @@ class PlayState extends FlxState
 		{
 			// you lost a battle
 			
-			FlxTween.tween(_overlay, { alpha : 1.0 }, 1);
-			var t: FlxTimer = new FlxTimer(1, function (t:FlxTimer) : Void { FlxG.switchState(new MenuState()); } );
+			EndGame();
 		}
 		
 		if (!_battleSystem.active)
@@ -100,7 +99,13 @@ class PlayState extends FlxState
 			}
 			
 			FlxG.collide(_player, _levelList.members[_currentLevelNumber].map);
+<<<<<<< HEAD
 			LevelChange();
+=======
+			FlxG.collide(_levelList.members[_currentLevelNumber]._grpEnemies, _levelList.members[_currentLevelNumber].map);
+			
+			CheckSpecialTiles();
+>>>>>>> 8896358b0d7b6a97d758d4f3a04897374666b09e
 		}
 		else
 		{
@@ -128,6 +133,8 @@ class PlayState extends FlxState
 		{
 			_currentLevelNumber--;
 			PlacePlayer();
+			FlxTween.tween(_overlay, { alpha:0.0 }, 1.0);
+			_inLevelChange = false;
 		}		
 	}
 	
@@ -152,7 +159,7 @@ class PlayState extends FlxState
 		}
 	}
 	
-	function LevelChange():Void 
+	function CheckSpecialTiles():Void 
 	{
 		if (!_inLevelChange)
 		{
@@ -165,10 +172,31 @@ class PlayState extends FlxState
 			{
 				FlxTween.tween(_overlay, { alpha:1.0 }, 1.0);
 				var t : FlxTimer = new FlxTimer(1.0, function (t:FlxTimer) : Void { MoveLevelDown();  } );
-				//MoveLevelDown();
 				_inLevelChange = true;
 			}			
+			if (_levelList.members[_currentLevelNumber].map.getTile(px, py) == 2)
+			{
+				if (_currentLevelNumber != 0)
+				{
+					FlxTween.tween(_overlay, { alpha:1.0 }, 1.0);
+					_inLevelChange = true;
+					var t : FlxTimer = new FlxTimer(1.0, function (t:FlxTimer) : Void { MoveLevelUp();  } );
+				}
+				else
+				{
+					FlxG.switchState(new CutSceneNoEscape(this));
+				}
+			}		
+			if (_levelList.members[_currentLevelNumber].map.getTile(px, py) == 3)
+			{
+				_player.RefillHP();
+			}			
 		}
+	}
+	
+	public function EndGame():Void 
+	{
+		FlxTween.tween(_overlay, { alpha : 1.0 }, 1, {complete:function (t:FlxTween) : Void { FlxG.switchState(new MenuState());}});
 	}
 
 	override public function draw():Void
@@ -186,7 +214,8 @@ class PlayState extends FlxState
 	
 	public function StartFight (e:Enemy) : Void 
 	{
-		//_battleSystem.StartBattle(e, _player);
+		trace ("startfight");
+		_battleSystem.StartBattle(e, _player);
 	}
 	
 }

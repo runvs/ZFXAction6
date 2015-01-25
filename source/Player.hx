@@ -5,6 +5,7 @@ import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.group.FlxTypedGroup;
 import flixel.util.FlxPoint;
+import flixel.util.FlxTimer;
 import flixel.util.FlxVector;
 
 /**
@@ -28,11 +29,15 @@ class Player extends FlxObject
 	
 	private var _totalTime : Float;
 	
+	private var _state :PlayState;
 	
+	private var _timer : FlxTimer;
 	
-	public function new() 
+	public function new(state:PlayState) 
 	{
 		super();
+		_state = state;
+		
 		_sprite = new FlxSprite();
 		_sprite.loadGraphic(AssetPaths.player__png, true, 32, 32);
 		_sprite.animation.add("walkright", [0, 1], 5, true);
@@ -88,6 +93,15 @@ class Player extends FlxObject
 		
 		for(item in _collectedItems)
 			trace(item.consumed);	
+			
+			
+		_timer = new FlxTimer(GameProperties.PlayerReduceKoetbullaTime, TriggerReduceKoetbulla, 0);
+	}
+	
+	public function TriggerReduceKoetbulla (t:FlxTimer):Void
+	{
+		trace ("reduce");
+		ReduceHP();
 	}
 	
 	public override function update():Void
@@ -122,9 +136,9 @@ class Player extends FlxObject
 		
 		for (i in _hpCurrent ... _hpMax)
 		{
-			_hpFull.x = 20 + i * 64 + _healthOffset.members[i].x;
-			_hpFull.y = 550 + _healthOffset.members[i].y;
-			_hpFull.draw();
+			_hpEmpty.x = 20 + i * 64 + _healthOffset.members[i].x;
+			_hpEmpty.y = 550 + _healthOffset.members[i].y;
+			_hpEmpty.draw();
 		}
 	}
 	
@@ -181,6 +195,21 @@ class Player extends FlxObject
 		var fp : FightProperties = new FightProperties();	
 		// TODO track changes
 		return fp;
+	}
+	
+	public function ReduceHP() : Void 
+	{
+		_hpCurrent -= 1;
+		
+		if (_hpCurrent < 0)
+		{
+			_state.EndGame();
+		}
+	}
+	
+	public function RefillHP () : Void 
+	{
+		_hpCurrent = _hpMax;
 	}
 	
 }
