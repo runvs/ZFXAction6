@@ -4,6 +4,7 @@ import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.text.FlxText;
+import flixel.tweens.FlxTween;
 import flixel.util.FlxColorUtil;
 
 /**
@@ -28,6 +29,7 @@ class Inventory extends FlxObject
 	private var _blueprint2 : BluePrint;
 	private var _blueprint3 : BluePrint;
 	
+	private var _infoText : FlxText;
 
 	public function new(player : Player) 
 	{
@@ -77,28 +79,43 @@ class Inventory extends FlxObject
 		_blueprint2 = new Hektar();		// attack
 		_blueprint3 = new Preiselbeersauce();	// koetbulla
 		
+		_infoText = new FlxText(300, 200, 200, "", 10);
+		_infoText.alpha = 0.0;
+		
 	}
 	
 	public override function update () : Void
 	{
 		MouseClick();
+		UpdateText();
+		
+		if (FlxG.keys.justPressed.C)
+		{
+			_infoText.text = "CaddyLack\n";
+			_infoText.alpha = 1.0;
+			FlxTween.tween(_infoText, { alpha : 0.0 }, 1.5, { startDelay:1 } );
+			
+		}
+		if (FlxG.keys.justPressed.H)
+		{
+			_infoText.text = "Hektar\n";
+			_infoText.alpha = 1.0;
+			FlxTween.tween(_infoText, { alpha : 0.0 }, 1.5, { startDelay:1 } );
+			
+		}
+		if (FlxG.keys.justPressed.P)
+		{
+			_infoText.text = "Preiselbeersauce\n";
+			_infoText.alpha = 1.0;
+			FlxTween.tween(_infoText, { alpha : 0.0 }, 1.5, { startDelay:1 } );
+			
+		}
+		
 		
 		_background.update();
 		_item1.update();
 		_item2.update();
 		_item3.update();
-		
-		_text1.text = "CaddyLack\n" + "(" + Std.string(_blueprint1.getNumberOfCollectedItems(BluePrint.convertArrayToMap(_player._collectedItems))) + "/" + Std.string(_blueprint1.getNumberOfTotalItems()) + ")";
-		_text2.text = "Hektar\n" + "(" + Std.string(_blueprint2.getNumberOfCollectedItems(BluePrint.convertArrayToMap(_player._collectedItems))) + "/" + Std.string(_blueprint2.getNumberOfTotalItems()) + ")";
-		_text3.text = "Preiselbeeren\n" + "(" + Std.string(_blueprint3.getNumberOfCollectedItems(BluePrint.convertArrayToMap(_player._collectedItems))) + "/" + Std.string(_blueprint3.getNumberOfTotalItems()) + ")";
-		
-		_text1.update();
-		_text2.update();
-		_text3.update();
-		trace (_text1.text);
-		
-		
-		
 		
 	}
 	
@@ -135,6 +152,19 @@ class Inventory extends FlxObject
 		}
 	}
 	
+	function UpdateText():Void 
+	{
+		_text1.text = "[C]addyLack\n" + "(" + Std.string(_blueprint1.getNumberOfCollectedItems(BluePrint.convertArrayToMap(_player._collectedItems))) + "/" + Std.string(_blueprint1.getNumberOfTotalItems()) + ")";
+		_text2.text = "[H]ektar\n" + "(" + Std.string(_blueprint2.getNumberOfCollectedItems(BluePrint.convertArrayToMap(_player._collectedItems))) + "/" + Std.string(_blueprint2.getNumberOfTotalItems()) + ")";
+		_text3.text = "[P]reiselbeeren\n" + "(" + Std.string(_blueprint3.getNumberOfCollectedItems(BluePrint.convertArrayToMap(_player._collectedItems))) + "/" + Std.string(_blueprint3.getNumberOfTotalItems()) + ")";
+		
+		_text1.update();
+		_text2.update();
+		_text3.update();	
+		
+		_infoText.update();
+	}
+	
 	public override function draw () : Void
 	{
 		_background.draw();
@@ -145,7 +175,8 @@ class Inventory extends FlxObject
 		_text1.draw();
 		_text2.draw();
 		_text3.draw();
-
+	
+		_infoText.draw();
 	}
 	
 }
