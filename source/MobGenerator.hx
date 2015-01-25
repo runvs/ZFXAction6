@@ -1,6 +1,6 @@
 class MobGenerator 
 {
-	public static function generateMobsFromTree(tree:flixel.group.FlxTypedGroup<Leaf>, ?initialChance:Float = 50):flixel.group.FlxTypedGroup<Enemy>
+	public static function generateMobsFromTree(tree:flixel.group.FlxTypedGroup<Leaf>, ?initialChance:Float = 50, level : Int):flixel.group.FlxTypedGroup<Enemy>
 	{
 		var listOfEmenies:flixel.group.FlxTypedGroup<Enemy> = new flixel.group.FlxTypedGroup<Enemy>();
 
@@ -31,8 +31,8 @@ class MobGenerator
 				//find coordinate
 				var x:Int = flixel.util.FlxRandom.intRanged(cast tmpRoom.left + 1, cast tmpRoom.right - 1) * 16;
 				var y:Int = flixel.util.FlxRandom.intRanged(cast tmpRoom.top + 1, cast tmpRoom.bottom - 1) * 16;
-				trace(x + "; " + y);
-				var e:Enemy = new Enemy();
+				//trace(x + "; " + y);
+				var e:Enemy = new Enemy(level);
 				e.setPosition(x, y);
 				listOfEmenies.add(e);
 				//increase chance for next spawn

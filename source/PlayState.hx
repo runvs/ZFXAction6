@@ -82,9 +82,10 @@ class PlayState extends FlxState
 			// you lost a battle
 			EndGame();
 		}
-		
 		_inventory.update();
-	
+		
+		
+		
 		if (!_battleSystem.active)
 		{
 			super.update();
@@ -102,11 +103,15 @@ class PlayState extends FlxState
 			FlxG.collide(_player, _levelList[_currentLevelNumber].map);
 
 			CheckSpecialTiles();
+			
+			_inventory.UnBlock();
 		}
 		else
 		{
 			_battleSystem.update();
+			_inventory.Block();
 		}	
+		//trace (_inventory._blockedInput);
 	}	
 	
 	private function MoveLevelDown() : Void 
@@ -135,7 +140,7 @@ class PlayState extends FlxState
 	{
 		for(i in 0...count)
 		{
-			var level : Level = new Level(this, _player, 32, 32);
+			var level : Level = new Level(this, _player, 32, 32, i);
 			_levelList.push(level);			
 		}
 		_currentLevelNumber = 0;
@@ -210,7 +215,7 @@ class PlayState extends FlxState
 	
 	public function StartFight (e:Enemy, p:Player) : Void 
 	{
-		trace ("startfight");
+		//trace ("startfight");
 		_battleSystem.StartBattle(e, p, _itemGenerator);
 	}
 	

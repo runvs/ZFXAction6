@@ -1,5 +1,12 @@
-class Lack extends Item
+package ;
+
+/**
+ * ...
+ * @author 
+ */
+class Nordli extends Item
 {
+
 	public function new()
 	{
 		super();
@@ -10,7 +17,8 @@ class Lack extends Item
 	{
 		if(consumed == false)
 		{
-			player.GetFightProperties().AttackDamage += 1;
+			player.GetFightProperties().HealthMax += 1;
+			player.GetFightProperties().HealthCurrent += 1;
 
 			consumed = true;
 		}
@@ -18,11 +26,12 @@ class Lack extends Item
 
 	public override function getName():String
 	{
-		return "Lack";
+		return "Nordli";
 	}
 	
 	public override function getInfo():String
 	{
-		return "Attack +1";
+		return "Health +1";
 	}
+	
 }

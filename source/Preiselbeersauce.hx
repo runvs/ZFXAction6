@@ -13,6 +13,7 @@ class Preiselbeersauce extends BluePrint
 		requiredItems.set("Lack", 1);
 		requiredItems.set("Item", 2);
 		_infoString = "Your Koetbulla last longer";
+		_name = "Preiselbeersauce";
 	}
 	
 }

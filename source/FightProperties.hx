@@ -53,6 +53,10 @@ class FightProperties
 		var damage : Float  = this.AttackDamage * ((target.IsDefending) ? armorReduction : 1.0 );
 		var evadeChance : Float = target.EvadeChance * ((target.IsDefending) ? 2.0 : 1.0);	// double the chance if the target is definding
 		
+		if (evadeChance > 0.8)
+		{
+			evadeChance = 0.8;
+		}
 	
 		
 		if (!FlxRandom.chanceRoll(evadeChance*100))

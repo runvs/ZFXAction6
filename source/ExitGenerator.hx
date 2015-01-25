@@ -29,7 +29,7 @@ class ExitGenerator
 
 							if(chance > 0.95)
 							{
-								trace("set exit at " + x + ", " + y);
+								//trace("set exit at " + x + ", " + y);
 								map.setTile(x, y, EXIT_UP_ID);
 								exitUpSet = true;
 								exitUpPosition.x = x;
@@ -52,7 +52,7 @@ class ExitGenerator
 
 							if(chance > 0.75)
 							{
-								trace("set exit at " + x + ", " + y);
+								//trace("set exit at " + x + ", " + y);
 								map.setTile(x, y, EXIT_DOWN_ID);
 								exitDownSet = true;
 								continue;

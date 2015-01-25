@@ -23,7 +23,7 @@ class Player extends FlxObject
 	private var _hpEmpty : FlxSprite;
 	
 	private var _hpMax : Int;
-	private var _hpCurrent : Int;
+	public var _hpCurrent : Int;
 	
 	private var _healthOffset : FlxTypedGroup<FlxSprite>;
 	
@@ -31,7 +31,11 @@ class Player extends FlxObject
 	
 	private var _timer : FlxTimer;
 
-	private var _fightingProperties:FightProperties;
+	public var _fightingProperties:FightProperties;
+	
+	private var _kbtsum : Float;
+	
+	private var _hasPreiselbeeren : Bool;
 	
 	public function new() 
 	{
@@ -74,17 +78,15 @@ class Player extends FlxObject
 		_totalTime = 0;
 		
 		_collectedItems = new Array<Item>();				
-		_timer = new FlxTimer(GameProperties.PlayerReduceKoetbullaTime, TriggerReduceKoetbulla, 0);
+		//_timer = new FlxTimer(GameProperties.PlayerReduceKoetbullaTime, TriggerReduceKoetbulla, 0);
+		
+		_kbtsum = 0;
 
-		_fightingProperties.AttackDamage = 10;
+		_fightingProperties.AttackDamage = 2;
+		
+		_hasPreiselbeeren = false;
 	}
-	
-	public function TriggerReduceKoetbulla (t:FlxTimer):Void
-	{
-		trace ("reduce");
-		ReduceHP();
-	}
-	
+
 	public override function update():Void
 	{
 		super.update();
@@ -92,6 +94,14 @@ class Player extends FlxObject
 	
 		DoMovement();
 		DoKoetbullaWobble();
+		
+		trace (_kbtsum + " " + _hpCurrent);
+		_kbtsum += FlxG.elapsed * ((_hasPreiselbeeren) ? 0.5 : 1);
+		if (_kbtsum >= GameProperties.PlayerReduceKoetbullaTime)
+		{
+			_kbtsum = 0;
+			ReduceHP();
+		}
 
 		var item:Item;
 		for(item in _collectedItems)
@@ -182,12 +192,30 @@ class Player extends FlxObject
 	
 	public function ReduceHP() : Void 
 	{
+		trace ("reduce");
 		_hpCurrent -= 1;
 	}
 	
 	public function RefillHP () : Void 
 	{
+		trace ("refill");
 		_hpCurrent = _hpMax;
+	}
+	
+	public function AddBlueprintItem(name:String)
+	{
+		if (name == "CaddyLack")
+		{
+			_fightingProperties.EvadeChance += 0.025;
+		}
+		else if (name == "Hektar")
+		{
+			_fightingProperties.AttackDamage += 4;
+		}
+		else if (name == "Preiselbeersauce")
+		{
+			_hasPreiselbeeren = true;
+		}
 	}
 	
 }

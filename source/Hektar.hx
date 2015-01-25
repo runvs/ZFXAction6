@@ -14,6 +14,7 @@ class Hektar extends BluePrint
 		requiredItems.set("Item", 10);
 		
 		_infoString = "Apply Damage";
+		_name = "Hektar";
 	}
 	
 }

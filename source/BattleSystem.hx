@@ -28,9 +28,12 @@ class BattleSystem extends FlxObject
 	private var _btnDefend : FlxButton;
 	private var _btnSpecial : FlxButton;
 	private var _btnFlee : FlxButton;
+	private var _btnHeal : FlxButton;
 	
 	private var _playerHealth : FlxSprite;
 	private var _enemyHealth : FlxSprite;
+	private var _healthBackground1 : FlxSprite;
+	private var _healthBackground2 : FlxSprite;
 	
 	private var _playerProperties : FightProperties;
 	private var _enemyProperties : FightProperties;
@@ -44,6 +47,9 @@ class BattleSystem extends FlxObject
 	public var _lostBattle : Bool = false;
 	
 	private var _infoString : FlxText;
+	private var _dropString : FlxText;
+	
+	
 	private var _itemGenerator:ItemGenerator;
 	
 	private var _hit1Sound : FlxSound;
@@ -52,6 +58,8 @@ class BattleSystem extends FlxObject
 	private var _fleeFailSound : FlxSound;
 	private var _fleeSuccessSound : FlxSound;
 	private var _evadeSound : FlxSound;
+	
+	private var _battleWon : Bool;
 	
 	
 	public function new() 
@@ -83,6 +91,9 @@ class BattleSystem extends FlxObject
 		_btnFlee = new FlxButton(560, 450, "[F]lee", PlayerFlee);
 		_btnFlee.set_width( 130 );
 		_btnFlee.scrollFactor = new FlxPoint(0, 0);
+		
+		_btnHeal = new FlxButton( 110 , 475, "Hea[l]", PlayerHeal);
+		_btnHeal.scrollFactor.set();
 		
 		_playerSprite = new FlxSprite();
 		_playerSprite.loadGraphic(AssetPaths.player__png, true, 32, 32);
@@ -116,9 +127,26 @@ class BattleSystem extends FlxObject
 		_enemyHealth.setPosition(500, 150);
 		_enemyHealth.scrollFactor.set();
 		
+		_healthBackground1 = new FlxSprite();
+		_healthBackground1.makeGraphic( 154, 29, FlxColorUtil.makeFromARGB(1, 10 , 10, 10));
+		_healthBackground1.origin.set(154, 29);
+		_healthBackground1.setPosition(498, 148);
+		_healthBackground1.scrollFactor.set();
+		
+		_healthBackground2 = new FlxSprite();
+		_healthBackground2.makeGraphic( 154, 29, FlxColorUtil.makeFromARGB(1, 10 , 10, 10));
+		_healthBackground2.origin.set(0, 12);
+		_healthBackground2.setPosition(148, 398);
+		_healthBackground2.scrollFactor.set();
+		
 		_infoString = new FlxText(0, 0, 200, "", 24);
 		_infoString.scrollFactor.set();
 		_infoString.alpha = 0;
+		
+		
+		_dropString = new FlxText(300, 300, 200, "", 24);
+		_dropString.scrollFactor.set();
+		_dropString.alpha = 0;
 		
 		_hit1Sound = new  FlxSound();
 		_hit2Sound = new  FlxSound();
@@ -159,6 +187,14 @@ class BattleSystem extends FlxObject
 		FlxTween.tween(_infoString, { y : y - 100, alpha : 0.0 }, 1.0);
 	}
 	
+	private function ShowDropString (s : String) : Void 
+	{
+		
+		_dropString.setPosition(250, 225);
+		_dropString.text = s;
+		_dropString.alpha = 1.0;
+		FlxTween.tween(_dropString, { y : y - 100, alpha : 0.0 }, 1.0, {startDelay: 1});
+	}
 	
 	public override function update () : Void 
 	{
@@ -169,6 +205,7 @@ class BattleSystem extends FlxObject
 		_btnDefend.update();
 		_btnSpecial.update();
 		_btnFlee.update();
+		_btnHeal.update();
 
 		_playerSprite.update();
 		_enemySprite.update();
@@ -190,17 +227,20 @@ class BattleSystem extends FlxObject
 	
 	private function WinBattle () : Void 
 	{
+		_battleWon = true;
 		// drop items
-		active = false;
 		_lostBattle = false;
 		_enemy.alive = false;
 
 		var item:Item = _itemGenerator.generateDrop(0);
-		trace(item);
-		//do stuff with item
-		//item.getName();
+		//trace(item);
 
+		
 		_player._collectedItems.push(item);
+		
+		ShowDropString("Dropped " + item.getName() + "\n" + item.getInfo());
+		var t:FlxTimer = new FlxTimer(2.0, function (t:FlxTimer) : Void  { active = false; } );
+		
 	}
 	
 	private function getInput() : Void 
@@ -220,6 +260,10 @@ class BattleSystem extends FlxObject
 		else if ( FlxG.keys.justPressed.F)
 		{
 			PlayerFlee();
+		}
+		else if (FlxG.keys.justPressed.L)
+		{
+			PlayerHeal();
 		}
 	}
 	
@@ -369,6 +413,17 @@ class BattleSystem extends FlxObject
 		}
 	}
 	
+	function PlayerHeal () : Void 
+	{
+		if (_player._hpCurrent > 0 )
+		{
+			_player.ReduceHP();
+			_player._fightingProperties.HealthCurrent = _playerProperties.HealthMax;
+			_playerProperties.HealthCurrent = _playerProperties.HealthMax;
+		}
+	}
+	
+	
 	function ScaleHealthBars():Void 
 	{
 		_playerHealth.scale.x = ((_playerProperties.HealthCurrent > 0) ?  _playerProperties.HealthCurrent / _playerProperties.HealthMax : 0);
@@ -391,7 +446,10 @@ class BattleSystem extends FlxObject
 			}
 			else if (_enemyProperties.HealthCurrent <= 0)
 			{
-				WinBattle();
+				if (!_battleWon)
+				{
+					WinBattle();
+				}
 			}
 		}
 	}
@@ -406,6 +464,8 @@ class BattleSystem extends FlxObject
 			_playerSprite.draw();
 			
 			
+			_healthBackground1.draw();
+			_healthBackground2.draw();
 			_playerHealth.draw();
 			_enemyHealth.draw();
 			
@@ -413,7 +473,10 @@ class BattleSystem extends FlxObject
 			_btnDefend.draw();
 			_btnSpecial.draw();
 			_btnFlee.draw();
+			_btnHeal.draw();
+			
 			_infoString.draw();
+			_dropString.draw();
 		}
 	}
 	
@@ -425,6 +488,7 @@ class BattleSystem extends FlxObject
 		_playerProperties = p.GetFightProperties();
 		_enemyProperties = e.GetFightProperties();
 		_itemGenerator = itemGenerator;
+		_battleWon = false;
 	}
 	
 }
