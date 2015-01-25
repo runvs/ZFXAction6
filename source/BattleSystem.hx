@@ -90,7 +90,7 @@ class BattleSystem extends FlxObject
 		_btnFlee.set_width( 130 );
 		_btnFlee.scrollFactor = new FlxPoint(0, 0);
 		
-		_btnHeal = new FlxButton( 110 , 400, "Hea[l]", PlayerHeal);
+		_btnHeal = new FlxButton( 110 , 475, "Hea[l]", PlayerHeal);
 		_btnHeal.scrollFactor.set();
 		
 		_playerSprite = new FlxSprite();
@@ -191,6 +191,7 @@ class BattleSystem extends FlxObject
 		_btnDefend.update();
 		_btnSpecial.update();
 		_btnFlee.update();
+		_btnHeal.update();
 
 		_playerSprite.update();
 		_enemySprite.update();
@@ -400,9 +401,12 @@ class BattleSystem extends FlxObject
 	
 	function PlayerHeal () : Void 
 	{
-		_player.ReduceHP();
-		_player._fightingProperties.HealthCurrent = _playerProperties.HealthMax;
-		_playerProperties.HealthCurrent = _playerProperties.HealthMax;
+		if (_player._hpCurrent > 0 )
+		{
+			_player.ReduceHP();
+			_player._fightingProperties.HealthCurrent = _playerProperties.HealthMax;
+			_playerProperties.HealthCurrent = _playerProperties.HealthMax;
+		}
 	}
 	
 	
