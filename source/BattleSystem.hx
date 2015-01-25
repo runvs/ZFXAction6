@@ -117,6 +117,7 @@ class BattleSystem extends FlxObject
 		_enemyHealth.scrollFactor.set();
 		
 		_infoString = new FlxText(0, 0, 200, "", 24);
+		_infoString.scrollFactor.set();
 		_infoString.alpha = 0;
 		
 		_hit1Sound = new  FlxSound();
@@ -370,8 +371,8 @@ class BattleSystem extends FlxObject
 	
 	function ScaleHealthBars():Void 
 	{
-		_playerHealth.scale.x = _playerProperties.HealthCurrent / _playerProperties.HealthMax;
-		_enemyHealth.scale.x = _enemyProperties.HealthCurrent / _enemyProperties.HealthMax;
+		_playerHealth.scale.x = ((_playerProperties.HealthCurrent > 0) ?  _playerProperties.HealthCurrent / _playerProperties.HealthMax : 0);
+		_enemyHealth.scale.x = ((_enemyProperties.HealthCurrent > 0) ?_enemyProperties.HealthCurrent / _enemyProperties.HealthMax : 0 );
 	}
 	
 	function BlockGUI():Void 

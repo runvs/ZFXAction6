@@ -59,16 +59,18 @@ class Level extends FlxObject
 	private function checkEnemyVision(e:Enemy):Void
 	{
 		var pathToHero:Array<flixel.util.FlxPoint> = map.findPath(e.getMidpoint(), _player.getMidpoint(), false);
-		
-	    if (map.ray(e.getMidpoint(), _player.getMidpoint()) && pathToHero.length < 7)
-	    {
-	        e.seesPlayer = true;
-	        e._chasePath.start(e, pathToHero, e.speed);
-	    }
-	    else
-	    {
-	        e.seesPlayer = false;	  
-	    }
+		if (pathToHero != null)
+		{
+			if (map.ray(e.getMidpoint(), _player.getMidpoint()) && pathToHero.length < 7)
+			{
+				e.seesPlayer = true;
+				e._chasePath.start(e, pathToHero, e.speed);
+			}
+			else
+			{
+				e.seesPlayer = false;	  
+			}
+		}
 	}	
 	
 }

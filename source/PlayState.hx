@@ -88,12 +88,13 @@ class PlayState extends FlxState
 		if (!_battleSystem.active)
 		{
 			super.update();
-			_levelList[_currentLevelNumber].update();
+			
 			_overlay.update();
 			
 			if (!_inLevelChange)
 			{
 				_player.update();
+				_levelList[_currentLevelNumber].update();
 			}
 			
 			_levelList[_currentLevelNumber]._grpEnemies.forEachAlive(function(e:Enemy):Void{flixel.FlxG.overlap(e, _player, StartFight);});
