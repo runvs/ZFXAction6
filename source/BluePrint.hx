@@ -26,8 +26,12 @@ class BluePrint
 		var map :  Map<String, Int> = new  Map<String, Int>();
 		for (i in 0 ... owned.length)
 		{
-			trace (owned[i].getName() + Std.string(map.get(owned[i].getName())));
+			map.set(owned[i].getName(), 0);
+		}
+		for (i in 0 ... owned.length)
+		{
 			map.set(owned[i].getName(), map.get(owned[i].getName()) + 1);
+			
 		}
 		
 		return map;
@@ -65,7 +69,7 @@ class BluePrint
 			//we have the item
 			if(owned.get(key) != null)
 			{
-				
+				onelineString += Std.string(owned.get(key));
 			}
 			else 
 			{

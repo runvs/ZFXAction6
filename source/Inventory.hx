@@ -101,22 +101,24 @@ class Inventory extends FlxObject
 		{
 			_infoText.text = "CaddyLack\n" + _blueprint1.getInfoString(BluePrint.convertArrayToMap(_player._collectedItems));
 			_infoText.alpha = 1.0;
-			FlxTween.tween(_infoText, { alpha : 0.0 }, 1.5, { startDelay:1 } );
+			FlxTween.tween(_infoText, { alpha : 0.0 }, 0.5, { startDelay:2 } );
 			_infoBackground.alpha = 1.0;
-			FlxTween.tween(_infoBackground, { alpha : 0.0 }, 1.5, { startDelay:1 } );
+			FlxTween.tween(_infoBackground, { alpha : 0.0 }, 0.5, { startDelay:2 } );
 			if (_blueprint1.isCraftable(_player._collectedItems))
 			{
 				_blueprint1.craft(_player._collectedItems);
 			}
+			
+			
 			
 		}
 		if (FlxG.keys.justPressed.H)
 		{
 			_infoText.text = "Hektar\n"  + _blueprint2.getInfoString(BluePrint.convertArrayToMap(_player._collectedItems));
 			_infoText.alpha = 1.0;
-			FlxTween.tween(_infoText, { alpha : 0.0 }, 1.5, { startDelay:1 } );
+			FlxTween.tween(_infoText, { alpha : 0.0 }, 0.5, { startDelay:2 } );
 			_infoBackground.alpha = 1.0;
-			FlxTween.tween(_infoBackground, { alpha : 0.0 }, 1.5, { startDelay:1 } );
+			FlxTween.tween(_infoBackground, { alpha : 0.0 }, 0.5, { startDelay:2 } );
 			if (_blueprint2.isCraftable(_player._collectedItems))
 			{
 				_blueprint2.craft(_player._collectedItems);
@@ -126,9 +128,9 @@ class Inventory extends FlxObject
 		{
 			_infoText.text = "Preiselbeersauce\n"  + _blueprint3.getInfoString(BluePrint.convertArrayToMap(_player._collectedItems));
 			_infoText.alpha = 1.0;
-			FlxTween.tween(_infoText, { alpha : 0.0 }, 1.5, { startDelay:1 } );
+			FlxTween.tween(_infoText, { alpha : 0.0 }, 0.5, { startDelay:2 } );
 			_infoBackground.alpha = 1.0;
-			FlxTween.tween(_infoBackground, { alpha : 0.0 }, 1.5, { startDelay:1 } );
+			FlxTween.tween(_infoBackground, { alpha : 0.0 }, 0.5, { startDelay:2 } );
 			if (_blueprint3.isCraftable(_player._collectedItems))
 			{
 				_blueprint3.craft(_player._collectedItems);

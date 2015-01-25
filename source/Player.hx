@@ -95,7 +95,7 @@ class Player extends FlxObject
 		{
 			item.apply(this);
 		}
-		trace(_fightingProperties.AttackDamage);
+		//trace(_fightingProperties.AttackDamage);
 	}
 	
 	public override function draw():Void

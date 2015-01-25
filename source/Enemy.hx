@@ -37,38 +37,11 @@ class Enemy extends flixel.FlxSprite
 
 	public function idle():Void
 	{
-		//trace("idle");
-	    // if (seesPlayer)
-	    // {
-	    //     _brain.activeState = chase;
-	    // }
-	    // else if (_idleTmr <= 0)
-	    // {
-	    //     if (flixel.util.FlxRandom.chanceRoll(1))
-	    //     {
-	    //         _moveDir = -1;
-	    //         velocity.x = velocity.y = 0;
-	    //     }
-	    //     else
-	    //     {
-	    //         _moveDir = flixel.util.FlxRandom.intRanged(0, 8) * 45;
-	    //         flixel.util.FlxAngle.rotatePoint(speed * .5, 0, 0, 0, _moveDir, velocity);
-	    //     }
-	    //     _idleTmr = flixel.util.FlxRandom.intRanged(1, 2);    
-	    // }
-	    // else
-	    // {
-	    //     _idleTmr -= flixel.FlxG.elapsed;
-	    // }
 	}
 
 
 	public function chase():Void
 	{
 		trace("chase");
-	    // if (!seesPlayer)
-	    // {
-	    //     _brain.activeState = idle;
-	    // }
 	}	
 }
