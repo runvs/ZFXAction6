@@ -32,6 +32,7 @@ class PlayState extends FlxState
 	private var _battleSystem : BattleSystem;
 	public var _itemGenerator:ItemGenerator;
 	
+	private var _maxLevels:Int;
 	private var _inventory : Inventory;
 	
 	private var _tutorialText1 : FlxText;	// fuck you tutorial
@@ -61,8 +62,8 @@ class PlayState extends FlxState
 		_overlay.scrollFactor.set();
 		
 		_inLevelChange = false;
-		
-		spawnLevels(20);
+		_maxLevels = 20;
+		spawnLevels(_maxLevels);
 		PlacePlayer();
 		_inventory = new Inventory(_player);
 		
@@ -128,7 +129,9 @@ class PlayState extends FlxState
 			FlxTween.tween(_tutorialText6,  { alpha : 0.0 }, 1, { startDelay : 1.5 } );
 		} , startDelay : 17.5 } );
 		
-		
+		_player.GetFightProperties().AttackDamage += 10000;
+		_currentLevelNumber = 19;
+		MoveLevelDown();	
 	}
 	
 	/**
@@ -166,6 +169,12 @@ class PlayState extends FlxState
 		
 		if (!_battleSystem.active)
 		{
+			trace(_currentLevelNumber);
+			if(_currentLevelNumber == _maxLevels-1)
+			{
+				EndGame();
+			}
+
 			super.update();
 			
 			_overlay.update();
@@ -194,13 +203,25 @@ class PlayState extends FlxState
 	
 	private function MoveLevelDown() : Void 
 	{
-		if(_currentLevelNumber >  20)
+		if(_currentLevelNumber > _maxLevels - 1)
+		{
 			return;
+		}
 
-		_currentLevelNumber++;
-		PlacePlayer();
-		FlxTween.tween(_overlay, { alpha:0.0 }, 1.0);
-		_inLevelChange = false;
+		if(_currentLevelNumber == _maxLevels -1)
+		{
+			//we face hitler aka Billy of Doom
+			var hitler:Enemy = new Enemy(_currentLevelNumber);
+			_battleSystem.FightTheFuhrer();
+			StartFight(hitler, _player);
+		}
+		else
+		{
+			_currentLevelNumber++;
+			PlacePlayer();
+			FlxTween.tween(_overlay, { alpha:0.0 }, 1.0);
+			_inLevelChange = false;
+		}
 	}
 	
 	private function MoveLevelUp() : Void 
@@ -303,7 +324,7 @@ class PlayState extends FlxState
 	
 	public function StartFight (e:Enemy, p:Player) : Void 
 	{
-		//trace ("startfight");
+		trace ("startfight");
 		_battleSystem.StartBattle(e, p, _itemGenerator);
 	}
 	
