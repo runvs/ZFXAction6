@@ -3,8 +3,8 @@ class ExitGenerator
 
 	public static function generateExitsForMap(map:flixel.tile.FlxTilemap, forbiddenList:Array<Int>):flixel.tile.FlxTilemap
 	{
-		var EXIT_UP_ID = 4;
-		var EXIT_DOWN_ID = 4;
+		var EXIT_UP_ID = 6;
+		var EXIT_DOWN_ID = 7;
 
 		var exitUpSet:Bool = false;
 		var exitDownSet:Bool = false;

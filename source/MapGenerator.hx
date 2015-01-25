@@ -18,7 +18,7 @@ class MapGenerator
 			if(room != null)
 			{
 				//roll type for room
-				var roomType:Int = flixel.util.FlxRandom.intRanged(1, 4);
+				var roomType:Int = 3; //always type one - we will manually add a canteen (2) later
 				//put the roomtype value into the "map"
 				listOfRooms.push(room);
 				listOfTypes.push(roomType);
@@ -64,7 +64,7 @@ class MapGenerator
 					{
 						if(type == 0)
 						{
-							type = 5;
+							type = 3;
 						}
 						break;
 					}

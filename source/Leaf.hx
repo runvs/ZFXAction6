@@ -149,8 +149,8 @@ class Leaf extends flixel.FlxBasic
             {
                 //if (flixel.util.FlxRandom.float() > 0.5)
                 {
-                    halls.push(new flixel.util.FlxRect(point2.x, point1.y, Math.abs(w), 2));
-                    halls.push(new flixel.util.FlxRect(point2.x, point2.y, 2, Math.abs(h)));
+                    halls.push(new flixel.util.FlxRect(point2.x, point1.y, Math.abs(w) + 1, 2));
+                    halls.push(new flixel.util.FlxRect(point2.x, point2.y, 2, Math.abs(h) +1 ));
                 }
                 //else
                 {
