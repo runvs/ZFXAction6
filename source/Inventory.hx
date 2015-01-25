@@ -123,7 +123,7 @@ class Inventory extends FlxObject
 				FlxTween.tween(_infoBackground, { alpha : 0.0 }, 0.5, { startDelay:2 } );
 				if (_blueprint1.isCraftable(_player._collectedItems))
 				{
-					_blueprint1.craft(_player._collectedItems);
+					_blueprint1.craft(_player._collectedItems, _player);
 				}
 				
 				
@@ -138,7 +138,7 @@ class Inventory extends FlxObject
 				FlxTween.tween(_infoBackground, { alpha : 0.0 }, 0.5, { startDelay:2 } );
 				if (_blueprint2.isCraftable(_player._collectedItems))
 				{
-					_blueprint2.craft(_player._collectedItems);
+					_blueprint2.craft(_player._collectedItems ,_player);
 				}
 			}
 			if (FlxG.keys.justPressed.P)
@@ -150,7 +150,7 @@ class Inventory extends FlxObject
 				FlxTween.tween(_infoBackground, { alpha : 0.0 }, 0.5, { startDelay:2 } );
 				if (_blueprint3.isCraftable(_player._collectedItems))
 				{
-					_blueprint3.craft(_player._collectedItems);
+					_blueprint3.craft(_player._collectedItems, _player);
 				}
 				
 			}

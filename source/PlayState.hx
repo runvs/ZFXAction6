@@ -35,6 +35,14 @@ class PlayState extends FlxState
 	private var _maxLevels:Int;
 	private var _inventory : Inventory;
 	
+	private var _tutorialText1 : FlxText;	// fuck you tutorial
+	private var _tutorialText2 : FlxText;	//movement
+	private var _tutorialText3 : FlxText;	// hotkeys
+	private var _tutorialText4 : FlxText;	// koetbulla
+	private var _tutorialText5 : FlxText;	// cantine
+	private var _tutorialText6 : FlxText;	// you need to ascend nightly ikea
+	private var _drawTutoral : Bool ;
+	
 	 /* Function that is called up when to state is created to set it up. 
 	 */
 	override public function create():Void
@@ -45,6 +53,8 @@ class PlayState extends FlxState
 		_itemGenerator = new ItemGenerator();
 		_battleSystem = new BattleSystem();
 		_player = new Player();
+		
+		_drawTutoral = true;
 
 		_overlay = new FlxSprite();
 		_overlay.makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
@@ -60,6 +70,64 @@ class PlayState extends FlxState
 		//lets go, tween in
 		FlxG.camera.follow(_player, FlxCamera.STYLE_TOPDOWN, new FlxPoint(), 10);
 		FlxTween.tween(_overlay, { alpha:0.0 }, 1.0);
+	
+		StartTutorial();
+		
+	}
+	
+	private function StartTutorial() : Void 
+	{
+		_tutorialText1 = new FlxText( 300, 200, 350, "Fuck [Y]ou Tutorial ", 32);
+		_tutorialText1.alpha = 0;
+		_tutorialText1.scrollFactor.set();
+		
+		FlxTween.tween(_tutorialText1,  { alpha : 1.0 }, 1, { complete : function(t: FlxTween) 
+		{
+			FlxTween.tween(_tutorialText1,  { alpha : 0.0 }, 1, { startDelay : 1.5 } );
+		} } );
+		
+		_tutorialText2 = new  FlxText(300, 200, 350, "To Move, use WASD or Arrows", 32);
+		_tutorialText2.alpha = 0;
+		_tutorialText2.scrollFactor.set();
+		
+		FlxTween.tween(_tutorialText2,  { alpha : 1.0 }, 1, { complete : function(t: FlxTween) 
+		{
+			FlxTween.tween(_tutorialText2,  { alpha : 0.0 }, 1, { startDelay : 1.5 } );
+		}, startDelay : 3.5 } );
+		
+		
+		_tutorialText3 = new  FlxText(300, 200, 350, "Hotkeys are displayed in square brackets", 32);
+		_tutorialText3.alpha = 0;
+		_tutorialText3.scrollFactor.set();
+		
+		FlxTween.tween(_tutorialText3,  { alpha : 1.0 }, 1, { complete : function(t: FlxTween) 
+		{
+			FlxTween.tween(_tutorialText3,  { alpha : 0.0 }, 1, { startDelay : 1.5 } );
+		}, startDelay : 7 } );
+		
+		_tutorialText4 = new  FlxText(300, 200, 350, "Your koetbulla (can heal you) drain over time & you get hungry.", 32);
+		_tutorialText4.alpha = 0;
+		_tutorialText4.scrollFactor.set();
+		FlxTween.tween(_tutorialText4,  { alpha : 1.0 }, 1, { complete : function(t: FlxTween) 
+		{
+			FlxTween.tween(_tutorialText4,  { alpha : 0.0 }, 1, { startDelay : 1.5 } );
+		}, startDelay : 10.5 } );
+		
+		_tutorialText5 = new  FlxText(300, 200, 350, "go to cafeteria (blue room) to refill", 32);
+		_tutorialText5.alpha = 0;
+		_tutorialText5.scrollFactor.set();
+		FlxTween.tween(_tutorialText5,  { alpha : 1.0 }, 1, { complete : function(t: FlxTween) 
+		{
+			FlxTween.tween(_tutorialText5,  { alpha : 0.0 }, 1, { startDelay : 1.5 } );
+		} , startDelay : 14 } );
+		
+		_tutorialText6 = new   FlxText(300, 200, 350, "You need to find the plug in the lower levels. Therefore ascend down!", 32);
+		_tutorialText6.alpha = 0;
+		_tutorialText6.scrollFactor.set();
+		FlxTween.tween(_tutorialText6,  { alpha : 1.0 }, 1, { complete : function(t: FlxTween) 
+		{
+			FlxTween.tween(_tutorialText6,  { alpha : 0.0 }, 1, { startDelay : 1.5 } );
+		} , startDelay : 17.5 } );
 		
 		_player.GetFightProperties().AttackDamage += 10000;
 		_currentLevelNumber = 19;
@@ -87,7 +155,17 @@ class PlayState extends FlxState
 		}
 		_inventory.update();
 		
+		if (FlxG.keys.justPressed.Y)
+		{
+			_drawTutoral = false;
+		}
 		
+		_tutorialText1.update();
+		_tutorialText2.update();
+		_tutorialText3.update();
+		_tutorialText4.update();
+		_tutorialText5.update();
+		_tutorialText6.update();
 		
 		if (!_battleSystem.active)
 		{
@@ -192,13 +270,13 @@ class PlayState extends FlxState
 			var py : Int = cast _player.y / 16;
 			
 			
-			if (_levelList[_currentLevelNumber].map.getTile(px, py) == 1)
+			if (_levelList[_currentLevelNumber].map.getTile(px, py) == 7)
 			{
 				FlxTween.tween(_overlay, { alpha:1.0 }, 1.0);
 				var t : FlxTimer = new FlxTimer(1.0, function (t:FlxTimer) : Void { MoveLevelDown();  } );
 				_inLevelChange = true;
 			}			
-			if (_levelList[_currentLevelNumber].map.getTile(px, py) == 2)
+			if (_levelList[_currentLevelNumber].map.getTile(px, py) == 6)
 			{
 				if (_currentLevelNumber != 0)
 				{
@@ -211,7 +289,7 @@ class PlayState extends FlxState
 					//FlxG.switchState(new CutSceneNoEscape(this));
 				}
 			}		
-			if (_levelList[_currentLevelNumber].map.getTile(px, py) == 3)
+			if (_levelList[_currentLevelNumber].map.getTile(px, py) == 2)
 			{
 				_player.RefillHP();
 			}			
@@ -232,6 +310,16 @@ class PlayState extends FlxState
 		_battleSystem.draw();
 		_inventory.draw();
 		_overlay.draw();
+		
+		if (_drawTutoral)
+		{
+			_tutorialText1.draw();
+			_tutorialText2.draw();
+			_tutorialText3.draw();
+			_tutorialText4.draw();
+			_tutorialText5.draw();
+			_tutorialText6.draw();
+		}
 	}
 	
 	public function StartFight (e:Enemy, p:Player) : Void 

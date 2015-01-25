@@ -32,9 +32,11 @@ class Level extends FlxObject
 		map.setTileProperties(3, FlxObject.NONE);
 		map.setTileProperties(4, FlxObject.NONE);
 		map.setTileProperties(5, FlxObject.NONE);
+		map.setTileProperties(6, FlxObject.NONE);
+		map.setTileProperties(7, FlxObject.NONE);
 		map.scale.set(1, 1);
 
-		_grpEnemies = MobGenerator.generateMobsFromTree(mapAsTree, 50, _level);
+		_grpEnemies = MobGenerator.generateMobsFromTree(mapAsTree, (_level == 0) ? 0 : 50, _level-1);
 
 		var forbiddenList:Array<Int> = new Array<Int>();
 		forbiddenList.push(0);

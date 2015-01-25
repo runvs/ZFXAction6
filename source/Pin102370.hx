@@ -4,7 +4,7 @@ package ;
  * ...
  * @author 
  */
-class Nordli extends Item
+class Pin102370 extends Item
 {
 
 	public function new()
@@ -17,21 +17,18 @@ class Nordli extends Item
 	{
 		if(consumed == false)
 		{
-			player._fightingProperties.HealthMax += 1;
-			player._fightingProperties.HealthCurrent += 1;
-
 			consumed = true;
 		}
 	}
 
 	public override function getName():String
 	{
-		return "Nordli";
+		return "Pin102370";
 	}
 	
 	public override function getInfo():String
 	{
-		return "Health +1";
+		return "Crafting";
 	}
 	
 }

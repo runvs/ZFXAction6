@@ -4,7 +4,7 @@ package ;
  * ...
  * @author 
  */
-class Nordli extends Item
+class Pax extends Item
 {
 
 	public function new()
@@ -17,8 +17,7 @@ class Nordli extends Item
 	{
 		if(consumed == false)
 		{
-			player._fightingProperties.HealthMax += 1;
-			player._fightingProperties.HealthCurrent += 1;
+			player._fightingProperties.ArmorReduction += 0.005;
 
 			consumed = true;
 		}
@@ -26,12 +25,12 @@ class Nordli extends Item
 
 	public override function getName():String
 	{
-		return "Nordli";
+		return "Pax";
 	}
 	
 	public override function getInfo():String
 	{
-		return "Health +1";
+		return "Armor + 0.5%";
 	}
 	
 }

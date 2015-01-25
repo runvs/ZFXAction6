@@ -57,6 +57,10 @@ class FightProperties
 		{
 			evadeChance = 0.8;
 		}
+		if (armorReduction > 0.8)
+		{
+			armorReduction = 0.8;
+		}
 	
 		
 		if (!FlxRandom.chanceRoll(evadeChance*100))

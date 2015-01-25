@@ -137,25 +137,26 @@ class BluePrint
 	//im only setting the used items to consumed so you dont have to
 	public function craft(ownedItems:Array<Item>, player:Player):Void
 	{
-		
-		var item:Item;
-		_crafted = true;
-		for(item in ownedItems)
+		if (!_crafted)
 		{
-			var key:String = item.getName();
-
-			if(requiredItems.get(key) != null)
+			var item:Item;
+			_crafted = true;
+			for(item in ownedItems)
 			{
-				var count:Int = requiredItems.get(key);
-				if(count > 0)
+				var key:String = item.getName();
+
+				if(requiredItems.get(key) != null)
 				{
-					item.consumed = true;
-					requiredItems.set(key, requiredItems.get(key) - 1);
+					var count:Int = requiredItems.get(key);
+					if(count > 0)
+					{
+						item.consumed = true;
+						requiredItems.set(key, requiredItems.get(key) - 1);
+					}
 				}
 			}
+			
+			player.AddBlueprintItem(_name);
 		}
-		
-		player.AddBlueprintItem(_name);
-		
 	}
 }

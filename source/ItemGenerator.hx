@@ -7,8 +7,15 @@ class ItemGenerator
 	public function new()
 	{
 		dropTable = new Map<Items, Int>();
-		dropTable.set(Items.Lack, 5);
-		dropTable.set(Items.BollyOfDoom, 1);
+		dropTable.set(Items.Lack, 1);
+		dropTable.set(Items.Nordli, 1);
+		dropTable.set(Items.Pax, 1);
+		
+		dropTable.set(Items.Screw114671, 2);
+		dropTable.set(Items.Screw122044, 2);
+		dropTable.set(Items.Pin102370, 2);
+		dropTable.set(Items.Plug0033451, 2);
+		
 		//trace(dropTable);
 		itemsByChance = new Array<Items>();
 		
@@ -43,10 +50,19 @@ class ItemGenerator
 		{
 			case Lack:
 				return new Lack();
-			case BollyOfDoom:
-				return new Item();
+			case Nordli:
+				return new Nordli();
+			case Pax:
+				return new Pax();
+			case Screw114671:
+				return new Screw114671();
+			case Pin102370:
+				return new Pin102370();
+			case Screw122044:
+				return new Screw122044();
+			case Plug0033451:
+				return new Plug0033451();
 		}
-
 		return null;
 	}
 
