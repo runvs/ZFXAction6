@@ -60,7 +60,7 @@ class BattleSystem extends FlxObject
 	private var _evadeSound : FlxSound;
 	
 	private var _battleWon : Bool;
-	
+	private var _fleeDisabled : Bool = false;
 	
 	public function new() 
 	{
@@ -381,6 +381,12 @@ class BattleSystem extends FlxObject
 	
 	private function PlayerFlee() : Void
 	{
+		if(_fleeDisabled)
+		{
+			ShowInfoString("Nobody flees from Hitler", true);
+			return;
+		}
+
 		if (_awaitInput)
 		{
 			DoEnemyAction();
@@ -489,6 +495,20 @@ class BattleSystem extends FlxObject
 		_enemyProperties = e.GetFightProperties();
 		_itemGenerator = itemGenerator;
 		_battleWon = false;
+	}
+
+	public function FightTheFuhrer()
+	{
+		_fleeDisabled = true;
+		_enemySprite = new FlxSprite();
+		_enemySprite.loadGraphic(AssetPaths.IkeaHitler__png, true, 64, 64);
+		_enemySprite.animation.add("idle", [0, 1, 2, 3, 4], 10, true);
+		_enemySprite.animation.play("idle");
+		_enemySprite.scale.set(2, 2);
+		_enemySprite.offset.set(2, 2);
+		_enemySprite.origin.set(2, 2);
+		_enemySprite.scrollFactor = new FlxPoint();
+		_enemySprite.setPosition(500, 200);	
 	}
 	
 }
