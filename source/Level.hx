@@ -1,6 +1,4 @@
-import flixel.FlxG;
 import flixel.FlxObject;
-import flixel.group.FlxTypedGroup;
 import flixel.tile.FlxTile;
 
 class Level extends FlxObject
@@ -10,14 +8,11 @@ class Level extends FlxObject
 	private var _player:Player;
 
 	public var map : flixel.tile.FlxTilemap;
-	private var _state :PlayState;
 	
 	public function new(state:PlayState, sizeX:Int, sizeY:Int)
 	{
 		super();
-	
-		_state = state;
-		
+
 		initializeLevel(sizeX, sizeY);
 		_grpEnemies = new flixel.group.FlxTypedGroup<Enemy>();
 	}
@@ -51,41 +46,25 @@ class Level extends FlxObject
 		_grpEnemies.update();
 		flixel.FlxG.collide(_grpEnemies, map);
 		_grpEnemies.forEachAlive(checkEnemyVision);
-		
-		_grpEnemies.forEachAlive(checkEnemyTouching);
-		
-		var newEnemyList : FlxTypedGroup<Enemy> = new FlxTypedGroup<Enemy>();
-		_grpEnemies.forEach(function(p:Enemy) { if (p.alive) { newEnemyList.add(p); } else { p.destroy(); } } );
-		_grpEnemies = newEnemyList;
 	}
-	
+
 	public override function draw():Void
 	{
-		//trace ("draw");
 		map.draw();
 		_grpEnemies.draw();
 	}
 
 	private function checkEnemyVision(e:Enemy):Void
 	{
-	    if (map.ray(e.getMidpoint(), _player.getMidpoint()))
+		var pathToHero:Array<flixel.util.FlxPoint> = map.findPath(e.getMidpoint(), _player.getMidpoint(), false);
+		
+	    if (map.ray(e.getMidpoint(), _player.getMidpoint()) && pathToHero.length < 7)
 	    {
 	        e.seesPlayer = true;
-	        e.playerPos.copyFrom(_player.getMidpoint());
+	        e._chasePath.start(e, pathToHero, e.speed);
 	    }
 	    else
 	        e.seesPlayer = false;
 	}	
-	
-	private function checkEnemyTouching (e:Enemy) : Void
-	{
-		FlxG.overlap(e, _player, StartFight);
-		e.alive = false;
-	}
-	
-	public function StartFight(e:Enemy, p:Player) : Void 
-	{
-		_state.StartFight(e);
-	}
 	
 }

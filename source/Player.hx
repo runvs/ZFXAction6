@@ -66,6 +66,28 @@ class Player extends FlxObject
 		_totalTime = 0;
 		
 		_collectedItems = new Array<Item>();	
+
+		var bp:BluePrint = new CaddyLack();
+		trace(bp.isCraftable(_collectedItems));
+
+		_collectedItems.push(new Lack());
+
+		trace(bp.isCraftable(_collectedItems));
+
+		for(i in 0...10)
+			_collectedItems.push(new Item());
+
+		trace(bp.isCraftable(_collectedItems));
+
+		var item:Item;
+		for(item in _collectedItems)
+			trace(item.consumed);	
+
+		bp.craft(_collectedItems);
+
+		
+		for(item in _collectedItems)
+			trace(item.consumed);	
 	}
 	
 	public override function update():Void
@@ -81,7 +103,6 @@ class Player extends FlxObject
 		{
 			item.apply(this);
 		}
-		
 	}
 	
 	public override function draw():Void
