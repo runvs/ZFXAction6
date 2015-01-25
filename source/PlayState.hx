@@ -21,7 +21,7 @@ import flixel.util.FlxTimer;
  */
 class PlayState extends FlxState
 {
-	private var _levelList : FlxTypedGroup<Level>;
+	private var _levelList : Array<Level>;
 	private var _currentLevelNumber : Int;
 	
 	private var _player : Player;
@@ -38,32 +38,26 @@ class PlayState extends FlxState
 	{
 		super.create();
 		
-		_levelList = new FlxTypedGroup<Level>();
-		_player = new Player(this);
-		SpawnNextLevel();
-		
-		_currentLevelNumber = 0;
-		
+		_levelList = new Array<Level>();
 		_itemGenerator = new ItemGenerator();
-		
-		PlacePlayer();
-		FlxG.camera.follow(_player, FlxCamera.STYLE_TOPDOWN, new FlxPoint(), 10);
+		_battleSystem = new BattleSystem();
+		_player = new Player();
+
 		_overlay = new FlxSprite();
 		_overlay.makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		_overlay.alpha = 1.0;
 		_overlay.scrollFactor.set();
 		
-		FlxTween.tween(_overlay, { alpha:0.0 }, 1.0);
 		_inLevelChange = false;
-	
+		
+		
+		//SpawnNextLevel();
+		spawnLevels(20);
+		PlacePlayer();
+
+		//lets go, tween in
 		FlxG.camera.follow(_player, FlxCamera.STYLE_TOPDOWN, new FlxPoint(), 10);
-		_overlay.alpha = 1.0;
-		
 		FlxTween.tween(_overlay, { alpha:0.0 }, 1.0);
-		_inLevelChange = false;
-		
-		_battleSystem = new BattleSystem(this);
-		
 	}
 	
 	/**
@@ -80,17 +74,18 @@ class PlayState extends FlxState
 	 */
 	override public function update():Void
 	{
+		trace("update");
 		if (_battleSystem._lostBattle)
 		{
 			// you lost a battle
-			
 			EndGame();
 		}
-		
+	
+		trace(_battleSystem.active);
 		if (!_battleSystem.active)
 		{
 			super.update();
-			_levelList.members[_currentLevelNumber].update();
+			_levelList[_currentLevelNumber].update();
 			_overlay.update();
 			
 			if (!_inLevelChange)
@@ -98,29 +93,23 @@ class PlayState extends FlxState
 				_player.update();
 			}
 			
-			FlxG.collide(_player, _levelList.members[_currentLevelNumber].map);
-<<<<<<< HEAD
-			LevelChange();
-=======
-			FlxG.collide(_levelList.members[_currentLevelNumber]._grpEnemies, _levelList.members[_currentLevelNumber].map);
-			
+			FlxG.collide(_player, _levelList[_currentLevelNumber].map);
+
 			CheckSpecialTiles();
->>>>>>> 8896358b0d7b6a97d758d4f3a04897374666b09e
 		}
 		else
 		{
 			_battleSystem.update();
-		}
-		
-		
+		}	
+
+		trace("end of update");
 	}	
 	
 	private function MoveLevelDown() : Void 
 	{
-		if (_currentLevelNumber + 1 >= _levelList.length)
-		{
-			SpawnNextLevel();
-		}
+		if(_currentLevelNumber >  20)
+			return;
+
 		_currentLevelNumber++;
 		PlacePlayer();
 		FlxTween.tween(_overlay, { alpha:0.0 }, 1.0);
@@ -138,22 +127,29 @@ class PlayState extends FlxState
 		}		
 	}
 	
-	function SpawnNextLevel():Void 
+	function spawnLevels(count:Int):Void
 	{
-		var level : Level = new Level(this, 32, 32);
-		_levelList.add(level);
+		for(i in 0...count)
+		{
+			var level : Level = new Level(this, _player, 32, 32);
+			_levelList.push(level);			
+		}
+		_currentLevelNumber = 0;
 	}
-	
+
 	function PlacePlayer():Void 
 	{
-		for (i in 0 ... _levelList.members[_currentLevelNumber].map.widthInTiles)
+		for (i in 0 ... _levelList[_currentLevelNumber].map.widthInTiles)
 		{
-			for (j in 0 ... _levelList.members[_currentLevelNumber].map.heightInTiles)
+			for (j in 0 ... _levelList[_currentLevelNumber].map.heightInTiles)
 			{
-				if ( _levelList.members[_currentLevelNumber].map.getTile(i, j) != 0)
+				if ( _levelList[_currentLevelNumber].map.getTile(i, j) != 0 && _levelList[_currentLevelNumber].map.getTile(i, j) != 1
+					&& _levelList[_currentLevelNumber].map.getTile(i, j) != 2)
 				{
 					_player.setPosition(16 * i, 16 * j);
-					break;
+					_levelList[0]._grpEnemies.add(new Enemy());
+					_levelList[0]._grpEnemies.members[0].setPosition(16 * i, 16 * j);
+					return;
 				}
 			}
 		}
@@ -168,13 +164,13 @@ class PlayState extends FlxState
 			var py : Int = cast _player.y / 16;
 			
 			
-			if (_levelList.members[_currentLevelNumber].map.getTile(px, py) == 1)
+			if (_levelList[_currentLevelNumber].map.getTile(px, py) == 1)
 			{
 				FlxTween.tween(_overlay, { alpha:1.0 }, 1.0);
 				var t : FlxTimer = new FlxTimer(1.0, function (t:FlxTimer) : Void { MoveLevelDown();  } );
 				_inLevelChange = true;
 			}			
-			if (_levelList.members[_currentLevelNumber].map.getTile(px, py) == 2)
+			if (_levelList[_currentLevelNumber].map.getTile(px, py) == 2)
 			{
 				if (_currentLevelNumber != 0)
 				{
@@ -184,10 +180,10 @@ class PlayState extends FlxState
 				}
 				else
 				{
-					FlxG.switchState(new CutSceneNoEscape(this));
+					//FlxG.switchState(new CutSceneNoEscape(this));
 				}
 			}		
-			if (_levelList.members[_currentLevelNumber].map.getTile(px, py) == 3)
+			if (_levelList[_currentLevelNumber].map.getTile(px, py) == 3)
 			{
 				_player.RefillHP();
 			}			
@@ -201,21 +197,20 @@ class PlayState extends FlxState
 
 	override public function draw():Void
 	{
+		trace("begin draw");
 		super.draw();
-		_levelList.members[_currentLevelNumber].draw();
+		_levelList[_currentLevelNumber].draw();
 		_player.draw();
 		_player.drawHealth();
-		
 		_battleSystem.draw();
-		
 		_overlay.draw();
-		
+		trace("end draw");
 	}
 	
-	public function StartFight (e:Enemy) : Void 
+	public function StartFight (e:Enemy, p:Player) : Void 
 	{
 		trace ("startfight");
-		_battleSystem.StartBattle(e, _player);
+		_battleSystem.StartBattle(e, p);
 	}
 	
 }

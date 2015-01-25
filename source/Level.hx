@@ -8,11 +8,13 @@ class Level extends FlxObject
 	private var _player:Player;
 
 	public var map : flixel.tile.FlxTilemap;
-	
-	public function new(state:PlayState, sizeX:Int, sizeY:Int)
+	public var _state:PlayState;
+
+	public function new(state:PlayState, player:Player, sizeX:Int, sizeY:Int)
 	{
 		super();
-
+		_state = state;
+		_player = player;
 		initializeLevel(sizeX, sizeY);
 		_grpEnemies = new flixel.group.FlxTypedGroup<Enemy>();
 	}
@@ -34,20 +36,16 @@ class Level extends FlxObject
 
 	public override function update():Void
 	{	
+		trace("begin");
 		super.update();
 		map.update();
-<<<<<<< HEAD
+		//flixel.FlxG.overlap(_grpEnemies, _player, _state.StartFight);
+		trace("Enemy");
 		flixel.FlxG.collide(_grpEnemies, map);
 		_grpEnemies.update();
-=======
-		_grpEnemies.update();
-		if (flixel.FlxG.collide(map, _grpEnemies))
-		{
-			trace ("collide");
-		}
-		
->>>>>>> 8896358b0d7b6a97d758d4f3a04897374666b09e
+
 		_grpEnemies.forEachAlive(checkEnemyVision);
+		trace("end");
 	}
 
 	public override function draw():Void

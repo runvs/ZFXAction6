@@ -29,15 +29,15 @@ class Player extends FlxObject
 	
 	private var _totalTime : Float;
 	
-	private var _state :PlayState;
-	
 	private var _timer : FlxTimer;
+
+	private var _fightingProperties:FightProperties;
 	
-	public function new(state:PlayState) 
+	public function new() 
 	{
 		super();
-		_state = state;
-		
+	
+		_fightingProperties = new FightProperties();
 		_sprite = new FlxSprite();
 		_sprite.loadGraphic(AssetPaths.player__png, true, 32, 32);
 		_sprite.animation.add("walkright", [0, 1], 5, true);
@@ -70,31 +70,7 @@ class Player extends FlxObject
 		
 		_totalTime = 0;
 		
-		_collectedItems = new Array<Item>();	
-
-		var bp:BluePrint = new CaddyLack();
-		trace(bp.isCraftable(_collectedItems));
-
-		_collectedItems.push(new Lack());
-
-		trace(bp.isCraftable(_collectedItems));
-
-		for(i in 0...10)
-			_collectedItems.push(new Item());
-
-		trace(bp.isCraftable(_collectedItems));
-
-		var item:Item;
-		for(item in _collectedItems)
-			trace(item.consumed);	
-
-		bp.craft(_collectedItems);
-
-		
-		for(item in _collectedItems)
-			trace(item.consumed);	
-			
-			
+		_collectedItems = new Array<Item>();				
 		_timer = new FlxTimer(GameProperties.PlayerReduceKoetbullaTime, TriggerReduceKoetbulla, 0);
 	}
 	
@@ -117,6 +93,7 @@ class Player extends FlxObject
 		{
 			item.apply(this);
 		}
+		trace(_fightingProperties.AttackDamage);
 	}
 	
 	public override function draw():Void
@@ -192,19 +169,12 @@ class Player extends FlxObject
 	
 	public function GetFightProperties() : FightProperties
 	{
-		var fp : FightProperties = new FightProperties();	
-		// TODO track changes
-		return fp;
+		return _fightingProperties;
 	}
 	
 	public function ReduceHP() : Void 
 	{
 		_hpCurrent -= 1;
-		
-		if (_hpCurrent < 0)
-		{
-			_state.EndGame();
-		}
 	}
 	
 	public function RefillHP () : Void 

@@ -31,9 +31,9 @@ class ItemGenerator
 	public function generateDrop(mobLevel:Int=1):Item
 	{
 		var randomIndex:Int = flixel.util.FlxRandom.intRanged(0, _maximumIndex - 1);
-		trace("max " + _maximumIndex);
-		trace(itemsByChance);
-		trace(randomIndex);
+		// trace("max " + _maximumIndex);
+		// trace(itemsByChance);
+		// trace(randomIndex);
 		return enumToItemLookUp(itemsByChance[randomIndex]);
 	}
 

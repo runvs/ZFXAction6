@@ -38,9 +38,7 @@ class BattleSystem extends FlxObject
 	private var _playerSprite : FlxSprite;
 	
 	private var _enemySprite : FlxSprite;
-	
-	
-	private var _state : PlayState;
+	private var _player:Player;
 	
 	public var _lostBattle : Bool = false;
 	
@@ -54,10 +52,9 @@ class BattleSystem extends FlxObject
 	private var _evadeSound : FlxSound;
 	
 	
-	public function new(state:PlayState) 
+	public function new() 
 	{
 		super();
-		_state = state;
 		
 		_awaitInput = true;
 		active = false;
@@ -142,7 +139,6 @@ class BattleSystem extends FlxObject
 		_fleeSuccessSound = FlxG.sound.load(AssetPaths.fleesuccess__ogg, 0.25, false, false , false );
 		_evadeSound = FlxG.sound.load(AssetPaths.evade__ogg, 0.25, false, false , false );
         #end
-		
 	}
 	
 	private function ShowInfoString (s : String, onPlayer:Bool) : Void 
@@ -193,15 +189,11 @@ class BattleSystem extends FlxObject
 	{
 		// drop items
 		active = false;
+		_lostBattle = false;
 	}
-	
 	
 	private function getInput() : Void 
 	{
-		if(FlxG.keys.justPressed.K)
-		{
-			trace(_state._itemGenerator.generateDrop());
-		}
 		if ( FlxG.keys.justPressed.A)
 		{
 			PlayerAttack();
@@ -423,8 +415,9 @@ class BattleSystem extends FlxObject
 	public function StartBattle ( e : Enemy, p:Player) : Void 
 	{
 		active = true;
-		_playerProperties = p.GetFightProperties();
-		_enemyProperties = p.GetFightProperties();
+		// _player = p;
+		// _playerProperties = p.GetFightProperties();
+		// _enemyProperties = e.GetFightProperties();
 		
 	}
 	

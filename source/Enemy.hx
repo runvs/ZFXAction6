@@ -5,13 +5,13 @@ class Enemy extends flixel.FlxSprite
 	private var _idleTmr:Float;
 	private var _moveDir:Float;
 	public var seesPlayer:Bool = false;
-
+	private var _fightingProperties:FightProperties;
 	public var _chasePath:flixel.util.FlxPath;
 
 	public function new()
 	{
 		super();
-
+		_fightingProperties = new FightProperties();
 		loadGraphic(AssetPaths.player__png, true, 32, 32);
 		scale.set(0.5, 0.5);	
 		offset.set(2,2);
@@ -29,6 +29,11 @@ class Enemy extends flixel.FlxSprite
 		super.update();
 		_brain.update();
 	}
+
+	public function GetFightProperties() : FightProperties
+	{
+		return _fightingProperties;
+	}	
 
 	public function idle():Void
 	{
@@ -61,9 +66,9 @@ class Enemy extends flixel.FlxSprite
 	public function chase():Void
 	{
 		trace("chase");
-	    if (!seesPlayer)
-	    {
-	        _brain.activeState = idle;
-	    }
+	    // if (!seesPlayer)
+	    // {
+	    //     _brain.activeState = idle;
+	    // }
 	}	
 }
