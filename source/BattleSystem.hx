@@ -39,10 +39,12 @@ class BattleSystem extends FlxObject
 	
 	private var _enemySprite : FlxSprite;
 	private var _player:Player;
+	private var _enemy:Enemy;
 	
 	public var _lostBattle : Bool = false;
 	
 	private var _infoString : FlxText;
+	private var _itemGenerator:ItemGenerator;
 	
 	private var _hit1Sound : FlxSound;
 	private var _hit2Sound : FlxSound;
@@ -160,18 +162,18 @@ class BattleSystem extends FlxObject
 	public override function update () : Void 
 	{
 		getInput();
-		
+	
 		_background.update();
 		_btnAttack.update();
 		_btnDefend.update();
 		_btnSpecial.update();
 		_btnFlee.update();
-		
+
 		_playerSprite.update();
 		_enemySprite.update();
 		
 		ScaleHealthBars();
-		
+
 		CheckActorHealth();
 		_infoString.update();
 		
@@ -190,6 +192,14 @@ class BattleSystem extends FlxObject
 		// drop items
 		active = false;
 		_lostBattle = false;
+		_enemy.alive = false;
+
+		var item:Item = _itemGenerator.generateDrop(0);
+		trace(item);
+		//do stuff with item
+		//item.getName();
+
+		_player._collectedItems.push(item);
 	}
 	
 	private function getInput() : Void 
@@ -385,10 +395,6 @@ class BattleSystem extends FlxObject
 		}
 	}
 	
-	
-	
-	
-	
 	public override function draw () : Void 
 	{
 		if (active)
@@ -407,18 +413,17 @@ class BattleSystem extends FlxObject
 			_btnSpecial.draw();
 			_btnFlee.draw();
 			_infoString.draw();
-			
-			
 		}
 	}
 	
-	public function StartBattle ( e : Enemy, p:Player) : Void 
+	public function StartBattle ( e : Enemy, p:Player, itemGenerator:ItemGenerator) : Void 
 	{
 		active = true;
-		// _player = p;
-		// _playerProperties = p.GetFightProperties();
-		// _enemyProperties = e.GetFightProperties();
-		
+		_player = p;
+		_enemy = e;
+		_playerProperties = p.GetFightProperties();
+		_enemyProperties = e.GetFightProperties();
+		_itemGenerator = itemGenerator;
 	}
 	
 }

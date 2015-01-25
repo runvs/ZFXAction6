@@ -10,7 +10,7 @@ class Lack extends Item
 	{
 		if(consumed == false)
 		{
-			player.GetFightProperties().AttackDamage + 1;
+			player.GetFightProperties().AttackDamage += 1;
 
 			consumed = true;
 		}

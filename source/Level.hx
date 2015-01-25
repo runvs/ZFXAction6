@@ -36,22 +36,19 @@ class Level extends FlxObject
 
 	public override function update():Void
 	{	
-		trace("begin");
 		super.update();
 		map.update();
-		//flixel.FlxG.overlap(_grpEnemies, _player, _state.StartFight);
-		trace("Enemy");
+		
 		flixel.FlxG.collide(_grpEnemies, map);
-		_grpEnemies.update();
-
+		
+		_grpEnemies.forEachAlive(function(e:Enemy):Void{e.update();});
 		_grpEnemies.forEachAlive(checkEnemyVision);
-		trace("end");
 	}
 
 	public override function draw():Void
 	{
 		map.draw();
-		_grpEnemies.draw();
+		_grpEnemies.forEachAlive(function(e:Enemy):Void{e.draw();});
 	}
 
 	private function checkEnemyVision(e:Enemy):Void

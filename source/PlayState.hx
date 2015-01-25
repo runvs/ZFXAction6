@@ -74,14 +74,12 @@ class PlayState extends FlxState
 	 */
 	override public function update():Void
 	{
-		trace("update");
 		if (_battleSystem._lostBattle)
 		{
 			// you lost a battle
 			EndGame();
 		}
 	
-		trace(_battleSystem.active);
 		if (!_battleSystem.active)
 		{
 			super.update();
@@ -93,6 +91,8 @@ class PlayState extends FlxState
 				_player.update();
 			}
 			
+			_levelList[_currentLevelNumber]._grpEnemies.forEachAlive(function(e:Enemy):Void{flixel.FlxG.overlap(e, _player, StartFight);});
+			
 			FlxG.collide(_player, _levelList[_currentLevelNumber].map);
 
 			CheckSpecialTiles();
@@ -101,8 +101,6 @@ class PlayState extends FlxState
 		{
 			_battleSystem.update();
 		}	
-
-		trace("end of update");
 	}	
 	
 	private function MoveLevelDown() : Void 
@@ -197,20 +195,18 @@ class PlayState extends FlxState
 
 	override public function draw():Void
 	{
-		trace("begin draw");
 		super.draw();
 		_levelList[_currentLevelNumber].draw();
 		_player.draw();
 		_player.drawHealth();
 		_battleSystem.draw();
 		_overlay.draw();
-		trace("end draw");
 	}
 	
 	public function StartFight (e:Enemy, p:Player) : Void 
 	{
 		trace ("startfight");
-		_battleSystem.StartBattle(e, p);
+		_battleSystem.StartBattle(e, p, _itemGenerator);
 	}
 	
 }

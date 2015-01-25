@@ -72,6 +72,8 @@ class Player extends FlxObject
 		
 		_collectedItems = new Array<Item>();				
 		_timer = new FlxTimer(GameProperties.PlayerReduceKoetbullaTime, TriggerReduceKoetbulla, 0);
+
+		_fightingProperties.AttackDamage = 10;
 	}
 	
 	public function TriggerReduceKoetbulla (t:FlxTimer):Void
