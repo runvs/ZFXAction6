@@ -12,7 +12,13 @@ class Enemy extends flixel.FlxSprite
 	{
 		super();
 		_fightingProperties = new FightProperties();
-		loadGraphic(AssetPaths.player__png, true, 32, 32);
+		loadGraphic(AssetPaths.Enemy__png, true, 32, 32);
+		animation.add("right", [0, 1], 5, true);
+		animation.add("left", [3, 4], 5, true);
+		animation.add("down", [0, 1], 5, true);
+		animation.add("up", [5, 6], 5, true);
+		animation.add("idle", [0, 1, 2], 5, true);
+		animation.play("idle");	
 		scale.set(0.5, 0.5);	
 		offset.set(2,2);
 		origin.set(2,2);
@@ -28,6 +34,23 @@ class Enemy extends flixel.FlxSprite
 	{
 		super.update();
 		_brain.update();
+
+		if (!_chasePath.finished && _chasePath.nodes != null) {
+			if (_chasePath.angle == 0 || _chasePath.angle == 45 || _chasePath.angle == -45) {
+				animation.play("up");
+			}
+			if (_chasePath.angle == 180 || _chasePath.angle == -135 || _chasePath.angle == 135) {
+				animation.play("down");
+			}
+			if (_chasePath.angle == 90) {
+				animation.play("right");
+			}
+			if (_chasePath.angle == -90) {
+				animation.play("left");
+			}
+		} else {
+			animation.play("idle");
+		}	
 	}
 
 	public function GetFightProperties() : FightProperties

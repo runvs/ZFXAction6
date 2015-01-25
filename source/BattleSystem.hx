@@ -95,8 +95,8 @@ class BattleSystem extends FlxObject
 		_playerSprite.setPosition(200, 300);
 		
 		_enemySprite = new FlxSprite();
-		_enemySprite.loadGraphic(AssetPaths.player__png, true, 32, 32);
-		_enemySprite.animation.add("walkright", [0, 1], 5, true);
+		_enemySprite.loadGraphic(AssetPaths.Enemy__png, true, 32, 32);
+		_enemySprite.animation.add("walkright", [0, 2], 5, true);
 		_enemySprite.animation.play("walkright");
 		_enemySprite.scale.set(3, 3);
 		_enemySprite.offset.set(2, 2);

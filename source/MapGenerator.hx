@@ -34,6 +34,22 @@ class MapGenerator
 			}
 		}
 
+		var canteenAdded:Bool = false;
+	
+		while(canteenAdded == false)
+		{
+			for(i in 0...listOfRooms.length)
+			{
+				var spawnCanteen:Bool = flixel.util.FlxRandom.chanceRoll(10);
+				if(spawnCanteen)
+				{
+					listOfTypes[i] = 2;
+					canteenAdded = true;
+					break;
+				}
+			}
+		}
+
 		//generate the map string
 		var mapString:StringBuf = new StringBuf();
 

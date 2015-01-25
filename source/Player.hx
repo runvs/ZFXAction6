@@ -41,6 +41,9 @@ class Player extends FlxObject
 		_sprite = new FlxSprite();
 		_sprite.loadGraphic(AssetPaths.player__png, true, 32, 32);
 		_sprite.animation.add("walkright", [0, 1], 5, true);
+		_sprite.animation.add("walkleft", [2, 3], 5, true);
+		_sprite.animation.add("walkdown", [4, 5], 5, true);
+		_sprite.animation.add("walkup", [6, 7], 5, true);
 		_sprite.animation.add("idle", [0], 5, true);
 		_sprite.animation.play("idle");
 		_sprite.scale.set(0.5, 0.5);
@@ -132,6 +135,7 @@ class Player extends FlxObject
 		{
 			//velocity.x -= GameProperties.PlayerMovementVelocityAdd / FlxG.timeScale;
 			x -= GameProperties.PlayerMovementVelocityAdd * FlxG.elapsed;
+			_sprite.animation.play("walkleft");
 		}
 		else if (right)
 		{
@@ -143,11 +147,13 @@ class Player extends FlxObject
 		{
 			//velocity.y -= GameProperties.PlayerMovementVelocityAdd / FlxG.timeScale;
 			y -= GameProperties.PlayerMovementVelocityAdd * FlxG.elapsed;
+			_sprite.animation.play("walkup");
 		}
 		else if (down)
 		{
 			//velocity.y += GameProperties.PlayerMovementVelocityAdd / FlxG.timeScale;
 			y += GameProperties.PlayerMovementVelocityAdd * FlxG.elapsed;
+			_sprite.animation.play("walkdown");
 		}
 		else
 		{
