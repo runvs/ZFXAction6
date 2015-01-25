@@ -16,15 +16,14 @@ class Level extends FlxObject
 		_state = state;
 		_player = player;
 		initializeLevel(sizeX, sizeY);
-		_grpEnemies = new flixel.group.FlxTypedGroup<Enemy>();
 	}
 	
 	private function initializeLevel(sizeX:Int, sizeY:Int):Void
 	{
-			
-		map = new flixel.tile.FlxTilemap();
+		var mapAsTree:flixel.group.FlxTypedGroup<Leaf> = MapGenerator.generateTree(sizeX, sizeY);
 
-		map.loadMap(MapGenerator.generateMapFromTree(MapGenerator.generateTree(32, 32)).toString(), AssetPaths.SpriteSheetA__png, 16, 16, 0, 0, 0);
+		map = new flixel.tile.FlxTilemap();
+		map.loadMap(MapGenerator.generateMapFromTree(mapAsTree).toString(), AssetPaths.SpriteSheetA__png, 16, 16, 0, 0, 0);
 		map.setTileProperties(0, FlxObject.ANY);
 		map.setTileProperties(1, FlxObject.NONE);
 		map.setTileProperties(2, FlxObject.NONE);
@@ -32,6 +31,8 @@ class Level extends FlxObject
 		map.setTileProperties(4, FlxObject.NONE);
 		map.setTileProperties(5, FlxObject.NONE);
 		map.scale.set(1, 1);
+
+		_grpEnemies = MobGenerator.generateMobsFromTree(mapAsTree, 50);
 	}
 
 	public override function update():Void
