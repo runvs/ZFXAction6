@@ -56,7 +56,6 @@ class PlayState extends FlxState
 		FlxTween.tween(_overlay, { alpha:0.0 }, 1.0);
 		_inLevelChange = false;
 	
-		_levelList.members[_currentLevelNumber].addPlayer(_player);
 		FlxG.camera.follow(_player, FlxCamera.STYLE_TOPDOWN, new FlxPoint(), 10);
 		_overlay.alpha = 1.0;
 		
@@ -101,7 +100,6 @@ class PlayState extends FlxState
 			}
 			
 			FlxG.collide(_player, _levelList.members[_currentLevelNumber].map);
-			
 			LevelChange();
 		}
 		else

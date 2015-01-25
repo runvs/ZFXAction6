@@ -4,7 +4,7 @@ import flixel.tile.FlxTile;
 class Level extends FlxObject
 {
 	
-	private var _grpEnemies:flixel.group.FlxTypedGroup<Enemy>;
+	public var _grpEnemies:flixel.group.FlxTypedGroup<Enemy>;
 	private var _player:Player;
 
 	public var map : flixel.tile.FlxTilemap;
@@ -32,19 +32,12 @@ class Level extends FlxObject
 		map.scale.set(1, 1);
 	}
 
-	public function addPlayer(player:Player):Void
-	{
-		_player = player;
-		_grpEnemies.add(new Enemy());
-		_grpEnemies.members[0].setPosition(_player.x, _player.y);
-	}
-
 	public override function update():Void
 	{	
 		super.update();
 		map.update();
-		_grpEnemies.update();
 		flixel.FlxG.collide(_grpEnemies, map);
+		_grpEnemies.update();
 		_grpEnemies.forEachAlive(checkEnemyVision);
 	}
 
@@ -64,7 +57,9 @@ class Level extends FlxObject
 	        e._chasePath.start(e, pathToHero, e.speed);
 	    }
 	    else
-	        e.seesPlayer = false;
+	    {
+	        e.seesPlayer = false;	  
+	    }
 	}	
 	
 }

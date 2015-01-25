@@ -1,21 +1,15 @@
 class Enemy extends flixel.FlxSprite
 {
-	private var _positionX:Float;
-	private var _positionY:Float;
-
 	public var speed:Float = 80;
 	private var _brain:StupidEnemyBrain;
 	private var _idleTmr:Float;
 	private var _moveDir:Float;
 	public var seesPlayer:Bool = false;
-	//public var playerPos(default, null):flixel.util.FlxPoint;
-	var _pointIndex:Int;
 
 	public var _chasePath:flixel.util.FlxPath;
 
 	public function new()
 	{
-		_pointIndex = 0;
 		super();
 
 		loadGraphic(AssetPaths.player__png, true, 32, 32);
@@ -27,13 +21,7 @@ class Enemy extends flixel.FlxSprite
 
 		_brain = new StupidEnemyBrain(idle);
 		_idleTmr = 0;
-		_chasePath = new flixel.util.FlxPath();
-		//playerPos = flixel.util.FlxPoint.get();	
-	}
-
-	public override function draw():Void
-	{
-		super.draw();
+		_chasePath = new flixel.util.FlxPath();	
 	}
 
 	public override function update():Void
@@ -44,43 +32,38 @@ class Enemy extends flixel.FlxSprite
 
 	public function idle():Void
 	{
-		//trace("idle");
-	    if (seesPlayer)
-	    {
-	        _brain.activeState = chase;
-	    }
-	    else if (_idleTmr <= 0)
-	    {
-	        if (flixel.util.FlxRandom.chanceRoll(1))
-	        {
-	            _moveDir = -1;
-	            velocity.x = velocity.y = 0;
-	        }
-	        else
-	        {
-	            _moveDir = flixel.util.FlxRandom.intRanged(0, 8) * 45;
-	            flixel.util.FlxAngle.rotatePoint(speed * .5, 0, 0, 0, _moveDir, velocity);
-	        }
-	        _idleTmr = flixel.util.FlxRandom.intRanged(1, 4);    
-	    }
-	    else
-	    {
-	        _idleTmr -= flixel.FlxG.elapsed;
-	    }
+		trace("idle");
+	    // if (seesPlayer)
+	    // {
+	    //     _brain.activeState = chase;
+	    // }
+	    // else if (_idleTmr <= 0)
+	    // {
+	    //     if (flixel.util.FlxRandom.chanceRoll(1))
+	    //     {
+	    //         _moveDir = -1;
+	    //         velocity.x = velocity.y = 0;
+	    //     }
+	    //     else
+	    //     {
+	    //         _moveDir = flixel.util.FlxRandom.intRanged(0, 8) * 45;
+	    //         flixel.util.FlxAngle.rotatePoint(speed * .5, 0, 0, 0, _moveDir, velocity);
+	    //     }
+	    //     _idleTmr = flixel.util.FlxRandom.intRanged(1, 2);    
+	    // }
+	    // else
+	    // {
+	    //     _idleTmr -= flixel.FlxG.elapsed;
+	    // }
 	}
 
 
 	public function chase():Void
 	{
-		//trace("chase");
+		trace("chase");
 	    if (!seesPlayer)
 	    {
 	        _brain.activeState = idle;
-	    }
-	    else
-	    {
-	    	//trace(playerPos);   	
-	        //flixel.util.FlxVelocity.moveTowardsPoint(this, playerPos, Std.int(speed));
 	    }
 	}	
 }
