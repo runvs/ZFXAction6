@@ -32,6 +32,8 @@ class BattleSystem extends FlxObject
 	
 	private var _playerHealth : FlxSprite;
 	private var _enemyHealth : FlxSprite;
+	private var _healthBackground1 : FlxSprite;
+	private var _healthBackground2 : FlxSprite;
 	
 	private var _playerProperties : FightProperties;
 	private var _enemyProperties : FightProperties;
@@ -124,6 +126,18 @@ class BattleSystem extends FlxObject
 		_enemyHealth.origin.set(150, 12);
 		_enemyHealth.setPosition(500, 150);
 		_enemyHealth.scrollFactor.set();
+		
+		_healthBackground1 = new FlxSprite();
+		_healthBackground1.makeGraphic( 154, 29, FlxColorUtil.makeFromARGB(1, 10 , 10, 10));
+		_healthBackground1.origin.set(154, 29);
+		_healthBackground1.setPosition(498, 148);
+		_healthBackground1.scrollFactor.set();
+		
+		_healthBackground2 = new FlxSprite();
+		_healthBackground2.makeGraphic( 154, 29, FlxColorUtil.makeFromARGB(1, 10 , 10, 10));
+		_healthBackground2.origin.set(0, 12);
+		_healthBackground2.setPosition(148, 398);
+		_healthBackground2.scrollFactor.set();
 		
 		_infoString = new FlxText(0, 0, 200, "", 24);
 		_infoString.scrollFactor.set();
@@ -450,6 +464,8 @@ class BattleSystem extends FlxObject
 			_playerSprite.draw();
 			
 			
+			_healthBackground1.draw();
+			_healthBackground2.draw();
 			_playerHealth.draw();
 			_enemyHealth.draw();
 			

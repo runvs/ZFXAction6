@@ -9,7 +9,7 @@ class ItemGenerator
 		dropTable = new Map<Items, Int>();
 		dropTable.set(Items.Lack, 5);
 		dropTable.set(Items.BollyOfDoom, 1);
-		trace(dropTable);
+		//trace(dropTable);
 		itemsByChance = new Array<Items>();
 		
 		//initialize the array
@@ -17,7 +17,7 @@ class ItemGenerator
 		while(iterator.hasNext())
 		{
 			var item:Items = iterator.next();
-			trace(item);
+			//trace(item);
 			var chance:Int = dropTable.get(item);
 			for(i in 0...chance)
 			{

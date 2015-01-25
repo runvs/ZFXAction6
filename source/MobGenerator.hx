@@ -31,7 +31,7 @@ class MobGenerator
 				//find coordinate
 				var x:Int = flixel.util.FlxRandom.intRanged(cast tmpRoom.left + 1, cast tmpRoom.right - 1) * 16;
 				var y:Int = flixel.util.FlxRandom.intRanged(cast tmpRoom.top + 1, cast tmpRoom.bottom - 1) * 16;
-				trace(x + "; " + y);
+				//trace(x + "; " + y);
 				var e:Enemy = new Enemy();
 				e.setPosition(x, y);
 				listOfEmenies.add(e);
