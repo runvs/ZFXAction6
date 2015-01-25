@@ -33,6 +33,10 @@ class Level extends FlxObject
 		map.scale.set(1, 1);
 
 		_grpEnemies = MobGenerator.generateMobsFromTree(mapAsTree, 50);
+
+		var forbiddenList:Array<Int> = new Array<Int>();
+		forbiddenList.push(0);
+		map = ExitGenerator.generateExitsForMap(map, forbiddenList);
 	}
 
 	public override function update():Void
