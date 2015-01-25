@@ -4,7 +4,7 @@ import flixel.tile.FlxTile;
 class Level extends FlxObject
 {
 	
-	private var _grpEnemies:flixel.group.FlxTypedGroup<Enemy>;
+	public var _grpEnemies:flixel.group.FlxTypedGroup<Enemy>;
 	private var _player:Player;
 
 	public var map : flixel.tile.FlxTilemap;
@@ -44,7 +44,11 @@ class Level extends FlxObject
 		super.update();
 		map.update();
 		_grpEnemies.update();
-		flixel.FlxG.collide(_grpEnemies, map);
+		if (flixel.FlxG.collide(map, _grpEnemies))
+		{
+			trace ("collide");
+		}
+		
 		_grpEnemies.forEachAlive(checkEnemyVision);
 	}
 
