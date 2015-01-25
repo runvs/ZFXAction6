@@ -17,6 +17,7 @@ class CutSceneIntro extends FlxState
 	private var _text : FlxText;
 	
 	private var _text2 : FlxText;
+	private var _text3 : FlxText;
 	
 	private var _sprite_ikea : FlxSprite;
 	private var _sprite_plug : FlxSprite;

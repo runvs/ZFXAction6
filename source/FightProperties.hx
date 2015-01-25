@@ -69,12 +69,16 @@ class FightProperties
 	}
 	
 	
-	public function DoSpecialAttack (target:FightProperties)
+	public function DoSpecialAttack (target:FightProperties) : Int
 	{
+		var ret : Int = 0;
 		this.AttackDamage *= 2.0;	// a simple double damage attack
-		DoAttack(target);
+		ret = DoAttack(target);
 		this.AttackDamage /= 2.0;	
 		SpecialAttackCollected = -1;
+		
+		return ret;
+		
 	}
 	
 	public function DoFlee (target:FightProperties ) : Bool 
